@@ -16,14 +16,16 @@ public class Main
 {
     public static void main(String[] args)
     {
-        if (args.length != 2)
-        {
-            System.err.println("please input args: graphFilePath, resultFilePath");
-            return;
-        }
+//        if (args.length != 2)
+//        {
+//            System.err.println("please input args: graphFilePath, resultFilePath");
+//            return;
+//        }
 
-        String graphFilePath = args[0];
-        String resultFilePath = args[1];
+       // String graphFilePath = args[0];
+       // String resultFilePath = args[1];
+    	String graphFilePath ="C:\\Users\\fan\\Desktop\\huawei\\CodeCraft2\\resource\\demo2\\0\\case.txt";
+        String resultFilePath ="C:\\Users\\fan\\Desktop\\huawei\\CodeCraft2\\resource\\demo2\\out0.txt";
 
         LogUtil.printLog("Begin");
 
@@ -31,7 +33,7 @@ public class Main
         String[] graphContent = FileUtil.read(graphFilePath, null);
 
         // 功能实现入口
-        String[] resultContents = Deploy.deployServer(graphContent);
+        String[] resultContents =Deploy.deployServer(graphContent);
 
         // 写入输出文件
         if (hasResults(resultContents))

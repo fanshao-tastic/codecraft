@@ -21,6 +21,22 @@ class Edge implements Serializable {
 	public int price;
 	public int band;
 
+	public  int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public int getBand() {
+		return band;
+	}
+
+	public void setBand(int band) {
+		this.band = band;
+	}
+
 	public Edge(int id, int startPoint, int endPoint, int band, int price) { 
 		//Edge的构造函数
 		this.id = id;
