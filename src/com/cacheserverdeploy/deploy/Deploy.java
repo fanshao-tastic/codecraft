@@ -58,8 +58,7 @@ public class Deploy implements Serializable {
 		Graph graph = new Graph(netVertexNum, edgeList, consumerVertexList, serverList);// 构图	
 		// 得出每个网络节点的权值=节点数*all_band/all_cost,排序由高到低
 		Map<Integer, Integer> nodeValue = new LinkedHashMap<Integer, Integer>();
-		nodeValue =getNodeValue(netVertexNum,graph,edgeList);
-		int count=55;
+		nodeValue =getNodeValue(netVertexNum,graph,edgeList);		
 //		for (Integer i : nodeValue.keySet()) {
 //			System.out.println(i + ":" + nodeValue.get(i));
 //			if(count>0){
@@ -69,8 +68,9 @@ public class Deploy implements Serializable {
 //		}	
 		serverList.add(0);
 		//serverList.add(2);
-		serverList.add(3);
-		serverList.add(24);// 使用最开始图上的用例，节点定为0，3，22
+		//serverList.add(15);
+		serverList.add(24);
+		//serverList.add(3);// 使用最开始图上的用例，节点定为0，3，22
 		List<Integer> must = graph.mustServer();
 		for (Integer i : must) {
 			System.out.println(i);
@@ -88,10 +88,10 @@ public class Deploy implements Serializable {
 		}
 
 		List<List<Integer>> out = getOutput(graph, demand);// 一定要使用副本
-		int fee = sumFee(graph, serverCost, out);// 计算总费用
-		System.out.println(fee);
-
-		return getFinalStringArray(out, map); // 最终返回字符串数组
+		//int fee = sumFee(graph, serverCost, out);// 计算总费用
+		//System.out.println(fee);
+		return null;
+		//return getFinalStringArray(out, map); // 最终返回字符串数组
 	}
 
 	private static Map<Integer, Integer> getNodeValue(int netVertexNum, Graph graph, Edge[] edgeList) {
@@ -372,32 +372,66 @@ public class Deploy implements Serializable {
 		}
 	}
 
-	public static List<List<Integer>> getOutput(Graph graph, int demand) {
-		/**
-		 * 使用最大流最小费用算法获取输出
-		 * 
-		 * @param graph
-		 *            当前的图
-		 * @param demand
-		 *            总需求
-		 * @return 链路数据 该参数类似一个二维数组，每一行表示一条路径，第一个数一定是虚拟总服务器，倒数第二个数一定是虚拟消费节点，
-		 *         最后一个数为链路带宽
-		 */
-		int netVertexNum = graph.netVertexNum;
-		// for(int i = 0; i < graph.struct.length; i++) {//打印图的结构
-		// String out = "Vertex " + String.valueOf(i) + ": ";
-		// for(Integer key: graph.struct[i].keySet()) {
-		// out += ("[Vertex " + String.valueOf(key) + " Edge " +
-		// String.valueOf(graph.struct[i].get(key)) + "]");
-		// }
-		// System.out.println(out);
-		// }
-		// System.out.println("-------------------------------------------------------------------------------");
-		Graph clone = graph.myclone();// 备份 Significant!!!!!!!!!!!!
-		Path path = maxFlowMinFee(clone, netVertexNum - 2, netVertexNum - 1, demand);
-		List<List<Integer>> out = path.fromPathToString();
-		return out;
-	}
+    public static List<List<Integer>> getOutput(Graph graph, int demand) {
+    	/**
+    	 * 使用最大流最小费用算法获取输出
+    	 * @param graph 当前的图
+    	 * @param demand 总需求
+    	 * @return 链路数据 该参数类似一个二维数组，每一行表示一条路径，第一个数一定是虚拟总服务器，倒数第二个数一定是虚拟消费节点，最后一个数为链路带宽
+    	 */
+    	int netVertexNum = graph.netVertexNum;
+//    	for(int i = 0; i < graph.struct.length; i++) {//打印图的结构
+//    		String out = "Vertex " + String.valueOf(i) + ": ";
+//    		for(Integer key: graph.struct[i].keySet()) {
+//    			out += ("[Vertex " + String.valueOf(key) + " Edge " + String.valueOf(graph.struct[i].get(key)) + "]");
+//    		}
+//    		System.out.println(out);
+//    	}
+//    	System.out.println("-------------------------------------------------------------------------------");
+    	Graph clone = graph.myclone();//备份 Significant!!!!!!!!!!!!
+    	Path path = maxFlowMinFee(clone, netVertexNum-2, netVertexNum-1, demand);
+    	if(path == null) {
+    		List<List<Integer>> warning = new ArrayList<List<Integer>>();
+    		List<ConsumerVertex> list = clone.consumerList;
+			for(ConsumerVertex cv : list) {
+				int nv = cv.connectedVertex;
+				Map<Integer, Integer> map = clone.struct[nv];
+				if(map.containsKey(clone.netVertexNum - 1)) {
+					List<Integer> record = new ArrayList<Integer>();
+					record.add(0); //0表示当前为消费节点信息
+					record.add(cv.id); //消费节点id
+					record.add(cv.demand); //消费节点需求
+					record.add(cv.demand - clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand); //已经满足的需求
+					record.add(clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand); //消费节点的剩余需求
+					warning.add(record);
+					String out = "Consumer Vertex NO." + cv.id + " is not fully servered ! ";
+					out += "demand: " + cv.demand + " left: " + clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand;
+					System.out.println(out);
+				}
+			}
+			for(Integer i : clone.struct[clone.netVertexNum - 2].keySet()) {
+				List<Integer> record = new ArrayList<Integer>();
+				record.add(1); //1表示当前为服务器节点信息
+				record.add(i); //服务器位置
+				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).band); //服务器总输出能力
+				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).band - clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).upBand); //服务器已输出的流量
+				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).upBand); //服务器剩余输出能力
+				warning.add(record);
+				String out = "Server Vertex NO." +  i + " is not fully used ! ";
+				out += "ability " + record.get(2) + " left: " + record.get(4);
+				System.out.println(out);
+			}
+			List<Integer> t = new ArrayList<Integer>();
+			t.add(-1);//最后一行为-1，代表异常
+			warning.add(t);
+    		return warning;
+    	}
+    	List<List<Integer>> out = path.fromPathToString();
+		List<Integer> s = new ArrayList<Integer>();
+		s.add(0); //0表示正确输出
+		out.add(s);
+    	return out;
+    }
 
 	public static int sumFee(Graph graph, int serverCost, List<List<Integer>> out) {
 		/**
