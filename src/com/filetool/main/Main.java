@@ -24,9 +24,8 @@ public class Main
 
        // String graphFilePath = args[0];
        // String resultFilePath = args[1];
-    	String graphFilePath ="C:\\Users\\fan\\Desktop\\huawei\\CodeCraft2\\resource\\demo2\\0\\case.txt";
-        String resultFilePath ="C:\\Users\\fan\\Desktop\\huawei\\CodeCraft2\\resource\\demo2\\out0.txt";
-
+    	String graphFilePath ="CodeCraft\\resource\\demo2\\0\\case.txt";
+        String resultFilePath ="CodeCraft\\resource\\demo2\\out0.txt";
         LogUtil.printLog("Begin");
 
         // 读取输入文件
