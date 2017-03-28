@@ -22,18 +22,18 @@ public class Main
 //            return;
 //        }
 
-<<<<<<< HEAD
+
 //        String graphFilePath = args[0];
 //        String resultFilePath = args[1];
     	String graphFilePath ="C:\\Users\\fan\\Desktop\\github\\codecraft1\\resource\\demo2\\0\\case.txt";
-        String resultFilePath ="C:\\Users\\fan\\Desktop\\github\\codecraft1\\resource\\out.txt";
-=======
+        String resultFilePath ="C:\\Users\\fan\\Desktop\\github\\codecraft1\\resource\\out3.txt";
+
        // String graphFilePath = args[0];
        // String resultFilePath = args[1];
-    	String graphFilePath ="CodeCraft\\resource\\demo2\\0\\case.txt";
-        String resultFilePath ="CodeCraft\\resource\\demo2\\out0.txt";
+    	//String graphFilePath ="CodeCraft\\resource\\demo2\\0\\case.txt";
+        //String resultFilePath ="CodeCraft\\resource\\demo2\\out0.txt";
 
->>>>>>> 5aa6f3ac200fbafac92aeb467d09f9d0f82d8865
+
         LogUtil.printLog("Begin");
 
         // 读取输入文件

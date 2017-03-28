@@ -29,7 +29,7 @@ public class FirstDeploy implements Serializable {
 	private static int serverCost;
 	private static int[][] haveGone;
 
-	public static String[] Firstdeploy(String[] graphContent) {
+	public static Map<Integer, Integer> Firstdeploy(String[] graphContent) {
 		/** do your work here **/
 
 		String[] num = graphContent[0].split(" ");
@@ -318,19 +318,28 @@ public class FirstDeploy implements Serializable {
 		System.out.println(serviceVertexsList.size());
 		System.out.println(sPServiceVertexsList.size());
 		int count = 0;
-		int count2 = 0;
+		int count2 = 0;		
+		Map<Integer,Integer> serMap=new LinkedHashMap<Integer,Integer>();
 		for (ServiceVertex serviceVertex : mayServiceVertexsList) {
 			count += serviceVertex.demand;
+			serMap.put(serviceVertex.location, serviceVertex.demand);
 		}
 		for (ServiceVertex serviceVertex : sPServiceVertexsList) {
 			count += serviceVertex.demand;
+			serMap.put(serviceVertex.location, serviceVertex.demand);
+		}
+		for (ServiceVertex serviceVertex : serviceVertexsList) {
+			count += serviceVertex.demand;
+			serMap.put(serviceVertex.location, serviceVertex.demand);
 		}
 		for (ConsumerVertex cv : consumerVertexList) {
 			count2 += cv.demand;
 		}
 		System.out.println(count);
-		System.out.println(count2);
-		return new String[] { "17", "\r\n", "0 8 0 20" };
+		System.out.println(count2);	
+		
+		sortMap(serMap);
+		return serMap;
 	}
 	
 	public static void sortMap(Map<Integer,Integer> Dcount) {  

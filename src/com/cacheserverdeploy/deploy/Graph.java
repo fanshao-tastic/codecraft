@@ -143,6 +143,7 @@ public class Graph implements Serializable{
 	}
 
 	public void setServerList(List<Integer> serverList){
+		this.serverList=serverList;
 		Set<Integer> set = new HashSet<Integer>();//新建一个Set，利用contains函数查找与消费节点相连的网络节点
 		for(int i = 0; i < consumerList.size(); i++) {
 			set.add(consumerList.get(i).connectedVertex);
@@ -218,10 +219,10 @@ public class Graph implements Serializable{
     	
     	Collections.sort(eachVertex);
     	Collections.reverse(eachVertex);
-    	for(int t = 0; t < demand; minCount++) {
-    		t += eachVertex.get(minCount);
-    	}
-    	minCount++; //确定服务器个数下限
+//    	for(int t = 0; t < demand; minCount++) {
+//    		t += eachVertex.get(minCount);
+//    	}
+//    	minCount++; //确定服务器个数下限
 		//return minCount;
 	}
 	
