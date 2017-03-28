@@ -29,7 +29,7 @@ public class FirstDeploy implements Serializable {
 	private static int serverCost;
 	private static int[][] haveGone;
 
-	public static Map<Integer, Integer> Firstdeploy(String[] graphContent) {
+	public static List<Map<Integer, Integer>> Firstdeploy(String[] graphContent) {
 		/** do your work here **/
 
 		String[] num = graphContent[0].split(" ");
@@ -255,11 +255,11 @@ public class FirstDeploy implements Serializable {
 					mayServiceVertexsList2 = new ArrayList<ServiceVertex>(mayServiceVertexsList);
 					serviceVertexsList2 = new ArrayList<ServiceVertex>(serviceVertexsList);
 					int sum = 0;
-					for (ServiceVertex serviceVertex2 : mayServiceVertexsList) {
-						sum += serviceVertex2.demand;
-						System.out.print(serviceVertex2.location + ":" + serviceVertex2.demand + " , ");
-					}
-					System.out.println("sum == " + sum);
+//					for (ServiceVertex serviceVertex2 : mayServiceVertexsList) {
+//						sum += serviceVertex2.demand;
+//						System.out.print(serviceVertex2.location + ":" + serviceVertex2.demand + " , ");
+//					}
+//					System.out.println("sum == " + sum);
 				}
 
 				if (result == 2) {
@@ -269,19 +269,19 @@ public class FirstDeploy implements Serializable {
 					edgeList = firstgraph.edgeList;
 					mayServiceVertexsList = new ArrayList<>(mayServiceVertexsList2);
 					serviceVertexsList = new ArrayList<>(serviceVertexsList2);
-					for (ServiceVertex serviceVertex2 : mayServiceVertexsList) {
-						System.out.print(serviceVertex2.location + ":" + serviceVertex2.demand + " , ");
-					}
-					System.out.println("");
+//					for (ServiceVertex serviceVertex2 : mayServiceVertexsList) {
+//						System.out.print(serviceVertex2.location + ":" + serviceVertex2.demand + " , ");
+//					}
+//					System.out.println("");
 				}
 
 				if (result == 3) {
 					count++;
 					System.out.println("合并失败返回3");
-					for (ServiceVertex serviceVertex2 : mayServiceVertexsList) {
-						System.out.print(serviceVertex2.location + ":" + serviceVertex2.demand + " , ");
-					}
-					System.out.println("");
+//					for (ServiceVertex serviceVertex2 : mayServiceVertexsList) {
+//						System.out.print(serviceVertex2.location + ":" + serviceVertex2.demand + " , ");
+//					}
+//					System.out.println("");
 				}
 
 				if (result == 4) {
@@ -318,28 +318,32 @@ public class FirstDeploy implements Serializable {
 		System.out.println(serviceVertexsList.size());
 		System.out.println(sPServiceVertexsList.size());
 		int count = 0;
-		int count2 = 0;		
-		Map<Integer,Integer> serMap=new LinkedHashMap<Integer,Integer>();
+		int count2 = 0;	
+		List<Map<Integer,Integer>> returnOut= new ArrayList<Map<Integer,Integer>>();
+		Map<Integer,Integer> serMap1=new LinkedHashMap<Integer,Integer>();  //可能
+		Map<Integer,Integer> serMap2=new LinkedHashMap<Integer,Integer>(); //一定是服务器
 		for (ServiceVertex serviceVertex : mayServiceVertexsList) {
 			count += serviceVertex.demand;
-			serMap.put(serviceVertex.location, serviceVertex.demand);
+			serMap1.put(serviceVertex.location, serviceVertex.demand);
 		}
 		for (ServiceVertex serviceVertex : sPServiceVertexsList) {
 			count += serviceVertex.demand;
-			serMap.put(serviceVertex.location, serviceVertex.demand);
+			serMap2.put(serviceVertex.location, serviceVertex.demand);
 		}
 		for (ServiceVertex serviceVertex : serviceVertexsList) {
 			count += serviceVertex.demand;
-			serMap.put(serviceVertex.location, serviceVertex.demand);
+			serMap2.put(serviceVertex.location, serviceVertex.demand);
 		}
 		for (ConsumerVertex cv : consumerVertexList) {
 			count2 += cv.demand;
 		}
 		System.out.println(count);
-		System.out.println(count2);	
+		System.out.println(count2);
 		
-		sortMap(serMap);
-		return serMap;
+		sortMap(serMap1);
+		returnOut.add(serMap1);
+		returnOut.add(serMap2);
+		return returnOut;
 	}
 	
 	public static void sortMap(Map<Integer,Integer> Dcount) {  
@@ -427,8 +431,8 @@ public class FirstDeploy implements Serializable {
 			return 4;
 		}
 		// 确定要合并哪两台服务器之后先在haveGone数组中记录。因为不管合并成功还是失败都可以被记录
-		System.out.println("****************************************" + startServiceVertex.location);
-		System.out.println("****************************************" + endServiceVertex.location);
+//		System.out.println("****************************************" + startServiceVertex.location);
+//		System.out.println("****************************************" + endServiceVertex.location);
 		for (Integer integer : shortestPath) {
 			System.out.print(integer + "->");
 		}

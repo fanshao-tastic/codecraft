@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 
 public class Deploy implements Serializable {
@@ -51,25 +49,26 @@ public class Deploy implements Serializable {
 		}
 
 		// ----FirstStepStart
-		FirstDeploy firstdeploy = new FirstDeploy();
-		Map<Integer, Integer> FirstStepOut = firstdeploy.Firstdeploy(graphContent);
-		for (Integer i : FirstStepOut.keySet()) {
-			System.out.print(i + ":" + FirstStepOut.get(i) + " , ");
-		}
-		System.out.println();
+		//FirstDeploy firstdeploy = new FirstDeploy();
+		List<Map<Integer, Integer>> FirstStepOut = FirstDeploy.Firstdeploy(graphContent);
+		
 		// ----FirstStepEND
 
 		Graph graph = new Graph(netVertexNum, edgeList, consumerVertexList, serverList);// 构图
 		// 得出每个网络节点的权值=节点数*all_band/all_cost,排序由高到低
-		Map<Integer, Integer> nodeValue = new LinkedHashMap<Integer, Integer>();
-		nodeValue = getNodeValue(netVertexNum, graph, edgeList);		
+		//Map<Integer, Integer> nodeValue = new LinkedHashMap<Integer, Integer>();
+		//nodeValue = getNodeValue(netVertexNum, graph, edgeList);		
 		List<Integer> must = graph.mustServer();
 		List<List<Integer>> out = null;
 		List<List<Integer>> result= null;
 		int ALL_COST=999999;
-		int count = 10;		
+		int count = 1000;
+		int flag=0;
 		while (count > 0) {
 			serverList = new ArrayList<Integer>();
+			for(Integer i : FirstStepOut.get(1).keySet()){
+				 serverList.add(i);
+			}
 			for (Integer i : must) {
 				//System.out.println(i);
 				if (i != (netVertexNum + 1)) {
@@ -77,17 +76,17 @@ public class Deploy implements Serializable {
 				}
 			}
 			count--;
-			int  FirstNum=FirstStepOut.size();
+			int  FirstNum=FirstStepOut.get(0).size();
 			int  countTime=0;
-			for(Integer i : FirstStepOut.keySet()){
+			for(Integer i : FirstStepOut.get(0).keySet()){
 				countTime++;
-				if(countTime<=FirstNum*0.6){
+				if(countTime<=FirstNum*0.7){
 					int rd=Math.random()>=0.2?1:0;
 					if(rd==1){
 						serverList.add(i);
 					}
 					
-				}else if(countTime>FirstNum*0.6 && countTime<=FirstNum*0.9){
+				}else if(countTime>FirstNum*0.7 && countTime<=FirstNum*0.9){
 					int rd=Math.random()>=0.5?1:0;
 					if(rd==1){
 						serverList.add(i);
@@ -99,22 +98,30 @@ public class Deploy implements Serializable {
 					}
 				}
 				
-			}			
-			
-			// serverList.add(3);
-			graph.setServerList(serverList);
-			for(Integer i:serverList){
-				System.out.print(i+"  ");
-			}
-			System.out.println();
+			}						
+//			 serverList.add(3);
+//			 serverList.add(0);
+//			 serverList.add(24);
+//			 serverList.add(17);
+			//graph.setServerList(serverList);
+			graph = new Graph(netVertexNum, edgeList, consumerVertexList, serverList);
+//			for(Integer i:serverList){
+//				System.out.print(i+"  ");
+//			}
+		//	System.out.println();
 			out = getOutput(graph, demand);// 一定要使用副本
 			if (out.get(out.size()-1).get(0) == 0) {
 				out.remove(out.size()-1);
 				int fee = sumFee(graph, serverCost, out);// 计算总费用
 				System.out.println(fee);
+				flag++;
 				if(fee<ALL_COST){
 					ALL_COST=fee;
 					result=out;
+					flag =0;
+				}
+				if(flag>100){
+					break;
 				}
 			}
 		}
@@ -123,32 +130,33 @@ public class Deploy implements Serializable {
 		System.out.println(ALL_COST);
 		System.out.println(result);
 		return getFinalStringArray(result, map); // 最终返回字符串数组
+		//return null;
 	}
 
-	private static Map<Integer, Integer> getNodeValue(int netVertexNum, Graph graph, Edge[] edgeList) {
-		// TODO Auto-generated method stub
-		Map<Integer, Integer> nodeValue = new LinkedHashMap<Integer, Integer>();
-		for (int i = 0; i < netVertexNum; i++) {
-			int band = 0;
-			int count = 0;
-			int temp = graph.struct[i].size();
-			// System.out.print(temp + " ");
-			if (graph.struct[i].size() != 0) {
-				for (Integer j : graph.struct[i].keySet()) {
-					for (int k = 0; k < edgeList.length; k++) {
-						if (edgeList[k].id == graph.struct[i].get(j)) {
-							band += edgeList[k].getBand();
-							count += edgeList[k].getBand() * edgeList[k].getPrice();
-							break;
-						}
-					}
-				}
-				nodeValue.put(i, temp * band * 100 / count);
-			}
-		}
-		sortMap(nodeValue);
-		return nodeValue;
-	}
+//	private static Map<Integer, Integer> getNodeValue(int netVertexNum, Graph graph, Edge[] edgeList) {
+//		// TODO Auto-generated method stub
+//		Map<Integer, Integer> nodeValue = new LinkedHashMap<Integer, Integer>();
+//		for (int i = 0; i < netVertexNum; i++) {
+//			int band = 0;
+//			int count = 0;
+//			int temp = graph.struct[i].size();
+//			// System.out.print(temp + " ");
+//			if (graph.struct[i].size() != 0) {
+//				for (Integer j : graph.struct[i].keySet()) {
+//					for (int k = 0; k < edgeList.length; k++) {
+//						if (edgeList[k].id == graph.struct[i].get(j)) {
+//							band += edgeList[k].getBand();
+//							count += edgeList[k].getBand() * edgeList[k].getPrice();
+//							break;
+//						}
+//					}
+//				}
+//				nodeValue.put(i, temp * band * 100 / count);
+//			}
+//		}
+//		sortMap(nodeValue);
+//		return nodeValue;
+//	}
 
 	/**
 	 * 对map，根据value的值来排序
@@ -440,9 +448,9 @@ public class Deploy implements Serializable {
 					record.add(cv.demand - clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand); // 已经满足的需求
 					record.add(clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand); // 消费节点的剩余需求
 					warning.add(record);
-					String out = "Consumer Vertex NO." + cv.id + " is not fully servered ! ";
-					out += "demand: " + cv.demand + " left: "
-							+ clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand;
+					//String out = "Consumer Vertex NO." + cv.id + " is not fully servered ! ";
+//					out += "demand: " + cv.demand + " left: "
+//							+ clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand;
 					//System.out.println(out);
 				}
 			}
@@ -455,8 +463,8 @@ public class Deploy implements Serializable {
 						- clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).upBand); // 服务器已输出的流量
 				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).upBand); // 服务器剩余输出能力
 				warning.add(record);
-				String out = "Server Vertex NO." + i + " is not fully used ! ";
-				out += "ability " + record.get(2) + " left: " + record.get(4);
+			//	String out = "Server Vertex NO." + i + " is not fully used ! ";
+				//out += "ability " + record.get(2) + " left: " + record.get(4);
 				//System.out.println(out);
 			}
 			List<Integer> t = new ArrayList<Integer>();

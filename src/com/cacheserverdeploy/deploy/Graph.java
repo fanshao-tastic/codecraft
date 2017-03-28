@@ -143,7 +143,18 @@ public class Graph implements Serializable{
 	}
 
 	public void setServerList(List<Integer> serverList){
-		this.serverList=serverList;
+		Set<Integer> server=new HashSet<Integer>();
+		for(Integer i:serverList){
+			server.add(i);
+		}
+		List<Integer> newList=new ArrayList<Integer>();
+		int count=0;
+		for(Integer i:server){
+			newList.add(count, i);
+			count++;
+		}
+		serverList=newList;
+		this.serverList=newList;
 		Set<Integer> set = new HashSet<Integer>();//新建一个Set，利用contains函数查找与消费节点相连的网络节点
 		for(int i = 0; i < consumerList.size(); i++) {
 			set.add(consumerList.get(i).connectedVertex);
