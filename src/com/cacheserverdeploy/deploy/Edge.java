@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 class Edge implements Serializable {
 	/**
-	 * @param id ±ßµÄ±àºÅ
-	 * @param startPoint Æğµã
-	 * @param endPoint ÖÕµã
-	 * @param upBand ÉÏĞĞ´ø¿í
-	 * @param downBand ÏÂĞĞ´ø¿í
-	 * @param price ¼Û¸ñ
-	 * @param band ×Ü´ø¿í
+	 * @param id è¾¹çš„ç¼–å·
+	 * @param startPoint èµ·ç‚¹
+	 * @param endPoint ç»ˆç‚¹
+	 * @param upBand ä¸Šè¡Œå¸¦å®½
+	 * @param downBand ä¸‹è¡Œå¸¦å®½
+	 * @param price ä»·æ ¼
+	 * @param band æ€»å¸¦å®½
 	 */
 	private static final long serialVersionUID = -759628232779267634L;
 	public int id;
@@ -38,7 +38,7 @@ class Edge implements Serializable {
 	}
 
 	public Edge(int id, int startPoint, int endPoint, int band, int price) { 
-		//EdgeµÄ¹¹Ôìº¯Êı
+		//Edgeçš„æ„é€ å‡½æ•°
 		this.id = id;
 		this.startPoint = startPoint;
 		this.endPoint = endPoint;
@@ -50,9 +50,9 @@ class Edge implements Serializable {
 
 	public Edge(int id, String parameters) {
 		/**
-		 * EdgeµÄÁíÒ»¸ö¹¹Ôìº¯Êı
-		 * @param id EdgeµÄ±àºÅ
-		 * @param parameters ¸ù¾İÊµÀıÎÄ¼şÊäÈëÒ»ĞĞ£¬¸÷²ÎÊıÓÃ¿Õ¸ñ·Ö¸î£¬·Ö±ğÊÇÆğµã¡¢ÖÕµã¡¢´ø¿í¡¢µ¥¼Û
+		 * Edgeçš„å¦ä¸€ä¸ªæ„é€ å‡½æ•°
+		 * @param id Edgeçš„ç¼–å·
+		 * @param parameters æ ¹æ®å®ä¾‹æ–‡ä»¶è¾“å…¥ä¸€è¡Œï¼Œå„å‚æ•°ç”¨ç©ºæ ¼åˆ†å‰²ï¼Œåˆ†åˆ«æ˜¯èµ·ç‚¹ã€ç»ˆç‚¹ã€å¸¦å®½ã€å•ä»·
 		 */
 		this.id = id;
 		String [] forInput = parameters.split(" ");

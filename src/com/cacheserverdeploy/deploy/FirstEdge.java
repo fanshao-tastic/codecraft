@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class FirstEdge implements Serializable{
 	/*
-	 * Á´Â·Àà
-	 * @param id Á´Â·id
-	 * @param startPoint Æğµã
-	 * @param endPoint ÖÕµã
-	 * @param usedBand ÒÑÊ¹ÓÃ´ø¿í¡£ÉÏĞĞÎªÕı£¬ÏÂĞĞÎª¸º¡£
-	 * @param maxBand µ±Ç°±ßµÄ×î´ó¸ºÔØ´ø¿í
-	 * @param price ´ø¿íµ¥¼Û
+	 * é“¾è·¯ç±»
+	 * @param id é“¾è·¯id
+	 * @param startPoint èµ·ç‚¹
+	 * @param endPoint ç»ˆç‚¹
+	 * @param usedBand å·²ä½¿ç”¨å¸¦å®½ã€‚ä¸Šè¡Œä¸ºæ­£ï¼Œä¸‹è¡Œä¸ºè´Ÿã€‚
+	 * @param maxBand å½“å‰è¾¹çš„æœ€å¤§è´Ÿè½½å¸¦å®½
+	 * @param price å¸¦å®½å•ä»·
 	 * 
 	 * 
 	 */
@@ -21,7 +21,7 @@ public class FirstEdge implements Serializable{
 	public int maxBand;
 	public int price;
 
-	public FirstEdge(int id, String parameters) { //¹¹Ôì·½·¨
+	public FirstEdge(int id, String parameters) { //æ„é€ æ–¹æ³•
 		this.id = id;
 		String [] forInput = parameters.split(" ");
 		this.startPoint = Integer.parseInt(forInput[0]);

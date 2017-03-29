@@ -11,10 +11,10 @@ import java.util.Queue;
 
 class SimpleGraph {
 	/**
-	 * ±íÊ¾Ò»¸ö¼òµ¥µÄÍ¼£¬ÆäÊµ¸ÃÀàÓ¦¸ÃºÍGraphÀà²î²»¶à£¬¿ÉÒÔ¿¼ÂÇÓÃGraph¼Ì³Ğ´ËÀà
-	 * @param INFINITY ¾²Ì¬±äÁ¿±íÊ¾ÎŞÇî´ó
-	 * @param struct ÓÃÁÚ½Ó±í±íÊ¾Í¼½á¹¹£¬ĞÎÊ½Îª¼üÖµ¶Ô£¬¼üÎª½ÚµãµÄ±êºÅ£¬ÖµÍ¬ÑùÊÇ¼üÖµ¶ÔµÄĞÎÊ½£¬¼ü±íÊ¾¸ÃµãÑÓÉìµÄ½Úµã£¬ÖµÖ±½ÓÊÇÁ½¸öµãÖ®¼äµÄ±ß
-	 * @param pointMap ±íÊ¾Í¼ÖĞµÄ½Úµã£¬¼üÎª½Úµã±àºÅ£¬ÖµÎª½Úµã±¾Éí
+	 * è¡¨ç¤ºä¸€ä¸ªç®€å•çš„å›¾ï¼Œå…¶å®è¯¥ç±»åº”è¯¥å’ŒGraphç±»å·®ä¸å¤šï¼Œå¯ä»¥è€ƒè™‘ç”¨Graphç»§æ‰¿æ­¤ç±»
+	 * @param INFINITY é™æ€å˜é‡è¡¨ç¤ºæ— ç©·å¤§
+	 * @param struct ç”¨é‚»æ¥è¡¨è¡¨ç¤ºå›¾ç»“æ„ï¼Œå½¢å¼ä¸ºé”®å€¼å¯¹ï¼Œé”®ä¸ºèŠ‚ç‚¹çš„æ ‡å·ï¼Œå€¼åŒæ ·æ˜¯é”®å€¼å¯¹çš„å½¢å¼ï¼Œé”®è¡¨ç¤ºè¯¥ç‚¹å»¶ä¼¸çš„èŠ‚ç‚¹ï¼Œå€¼ç›´æ¥æ˜¯ä¸¤ä¸ªç‚¹ä¹‹é—´çš„è¾¹
+	 * @param pointMap è¡¨ç¤ºå›¾ä¸­çš„èŠ‚ç‚¹ï¼Œé”®ä¸ºèŠ‚ç‚¹ç¼–å·ï¼Œå€¼ä¸ºèŠ‚ç‚¹æœ¬èº«
 	 */
 	
 	private static final int INFINITY = 9999;
@@ -23,10 +23,10 @@ class SimpleGraph {
 	
 	class Point {
 		/**
-		 * ÄÚ²¿Àà£¬±íÊ¾½Úµã
-		 * @param id ½Úµãid
-		 * @param dist ¾àÀë
-		 * @param path Â·¾¶ÉÏ¸ÃµãµÄÇ°Ò»¸ö½ÚµãµÄid
+		 * å†…éƒ¨ç±»ï¼Œè¡¨ç¤ºèŠ‚ç‚¹
+		 * @param id èŠ‚ç‚¹id
+		 * @param dist è·ç¦»
+		 * @param path è·¯å¾„ä¸Šè¯¥ç‚¹çš„å‰ä¸€ä¸ªèŠ‚ç‚¹çš„id
 		 */
 		public int id;
 		public int dist;
@@ -41,30 +41,30 @@ class SimpleGraph {
 
 	public SimpleGraph(Path path) {
 		/**
-		 * ¹¹Ôìº¯Êı
-		 * @param path Â·¾¶¹¹Í¼
+		 * æ„é€ å‡½æ•°
+		 * @param path è·¯å¾„æ„å›¾
 		 */
-		this.struct = new HashMap<Integer, HashMap<Integer, OnePath>>();//³õÊ¼»¯struct
-		this.pointMap = new HashMap<Integer, Point>();//³õÊ¼»¯pointMap
-		List<OnePath> pathList = path.pathList;//ÌáÈ¡Â·¾¶
+		this.struct = new HashMap<Integer, HashMap<Integer, OnePath>>();//åˆå§‹åŒ–struct
+		this.pointMap = new HashMap<Integer, Point>();//åˆå§‹åŒ–pointMap
+		List<OnePath> pathList = path.pathList;//æå–è·¯å¾„
 		for(int i = 0; i < pathList.size(); i++) {
-			OnePath present = pathList.get(i);//È¡³öµ¥ÌõÂ·¾¶
-			if(!struct.containsKey(present.startPoint)) {//³õÊ¼»¯Æğµã
+			OnePath present = pathList.get(i);//å–å‡ºå•æ¡è·¯å¾„
+			if(!struct.containsKey(present.startPoint)) {//åˆå§‹åŒ–èµ·ç‚¹
 				struct.put(present.startPoint, new HashMap<Integer, OnePath>());
 				pointMap.put(present.startPoint, new Point(present.startPoint, INFINITY, -1));
 			}
 			
-			if(!struct.containsKey(present.endPoint)) {//³õÊ¼»¯ÖÕµã
+			if(!struct.containsKey(present.endPoint)) {//åˆå§‹åŒ–ç»ˆç‚¹
 				struct.put(present.endPoint, new HashMap<Integer, OnePath>());
 				pointMap.put(present.endPoint, new Point(present.endPoint, INFINITY, -1));
 			}
-			struct.get(present.startPoint).put(present.endPoint, present);//¹¹Í¼
+			struct.get(present.startPoint).put(present.endPoint, present);//æ„å›¾
 		}
 	}
 	
 	public SimpleGraph(List<Edge> path) {
 		/**
-		 * ¹¹Ôìº¯Êı£¬Ô­ÀíºÍÖ®Ç°Ò»Ñù
+		 * æ„é€ å‡½æ•°ï¼ŒåŸç†å’Œä¹‹å‰ä¸€æ ·
 		 */
 		this.struct = new HashMap<Integer, HashMap<Integer, OnePath>>();
 		this.pointMap = new HashMap<Integer, Point>();
@@ -85,48 +85,48 @@ class SimpleGraph {
 	
 	public List<Integer> bfs(int start, int end) {
 		/**
-		 * Ê¹ÓÃ¹ã¶ÈÓÅÏÈ±éÀú·¨»ñÈ¡×î¶ÌÂ·¾¶
-		 * @param start Æğµã
-		 * @param end ÖÕµã
-		 * @return Â·¾¶±àºÅ£¬´ÓÆğµãÖÁÖÕµã
+		 * ä½¿ç”¨å¹¿åº¦ä¼˜å…ˆéå†æ³•è·å–æœ€çŸ­è·¯å¾„
+		 * @param start èµ·ç‚¹
+		 * @param end ç»ˆç‚¹
+		 * @return è·¯å¾„ç¼–å·ï¼Œä»èµ·ç‚¹è‡³ç»ˆç‚¹
 		 */
-		List<Integer> output = new ArrayList<Integer>();//³õÊ¼»¯Êä³ö
-		Queue<Point> queue = new LinkedList<Point>();//³õÊ¼»¯¶ÓÁĞ
+		List<Integer> output = new ArrayList<Integer>();//åˆå§‹åŒ–è¾“å‡º
+		Queue<Point> queue = new LinkedList<Point>();//åˆå§‹åŒ–é˜Ÿåˆ—
 		for(Integer key: pointMap.keySet()) {
-			pointMap.put(key, new Point(key, INFINITY, -1));//³õÊ¼»¯ËùÓĞ½ÚµãµÄ²ÎÊı¡£-1±íÊ¾¸Ã½ÚµãÄ¿Ç°Ã»ÓĞÇ°Çı
+			pointMap.put(key, new Point(key, INFINITY, -1));//åˆå§‹åŒ–æ‰€æœ‰èŠ‚ç‚¹çš„å‚æ•°ã€‚-1è¡¨ç¤ºè¯¥èŠ‚ç‚¹ç›®å‰æ²¡æœ‰å‰é©±
 		}
 		
-		pointMap.get(start).dist = 0;//ÆğµãµÄ¾àÀë³õÊ¼»¯Îª0
-		queue.offer(pointMap.get(start));//Æğµã¼ÓÈë¶ÓÁĞ
-		//¶ÓÁĞ·Ç¿Õ»òÕßÖÕµãÎ´µ½´ïÊ±½øĞĞµü´ú
+		pointMap.get(start).dist = 0;//èµ·ç‚¹çš„è·ç¦»åˆå§‹åŒ–ä¸º0
+		queue.offer(pointMap.get(start));//èµ·ç‚¹åŠ å…¥é˜Ÿåˆ—
+		//é˜Ÿåˆ—éç©ºæˆ–è€…ç»ˆç‚¹æœªåˆ°è¾¾æ—¶è¿›è¡Œè¿­ä»£
 		while(!queue.isEmpty() && pointMap.get(end).dist == INFINITY) {
-			Point p = queue.poll();	//¶ÓÊ×³ö¶Ó
-			HashMap<Integer, OnePath> linkedPoint = struct.get(p.id);//»ñÈ¡¸Ã½ÚµãµÄÁÚ½Ó±í
+			Point p = queue.poll();	//é˜Ÿé¦–å‡ºé˜Ÿ
+			HashMap<Integer, OnePath> linkedPoint = struct.get(p.id);//è·å–è¯¥èŠ‚ç‚¹çš„é‚»æ¥è¡¨
 			for(Integer key: linkedPoint.keySet()) {
-				if(pointMap.get(key).dist == INFINITY) {//Èô¸Ã½ÚµãÎ´Öª½«¸ÃµãÈë¶Ó
-					pointMap.get(key).dist = pointMap.get(p.id).dist + 1;//¾àÀë×ÔÔö1
-					pointMap.get(key).path = p.id;//±ê¼ÇÇ°Çı
-					queue.offer(pointMap.get(key));//Èë¶Ó
+				if(pointMap.get(key).dist == INFINITY) {//è‹¥è¯¥èŠ‚ç‚¹æœªçŸ¥å°†è¯¥ç‚¹å…¥é˜Ÿ
+					pointMap.get(key).dist = pointMap.get(p.id).dist + 1;//è·ç¦»è‡ªå¢1
+					pointMap.get(key).path = p.id;//æ ‡è®°å‰é©±
+					queue.offer(pointMap.get(key));//å…¥é˜Ÿ
 				}
 			}
 		}
 		int pv = end;
-		while(pv != -1) { //½«Â·¾¶·´Ïòµ¼Èëoutput,ÆğµãµÄpvÎª-1,µ±ËÑË÷µ½-1Ê±±íÊ¾½áÊø
+		while(pv != -1) { //å°†è·¯å¾„åå‘å¯¼å…¥output,èµ·ç‚¹çš„pvä¸º-1,å½“æœç´¢åˆ°-1æ—¶è¡¨ç¤ºç»“æŸ
 			output.add(pv);
 			pv = pointMap.get(pv).path;
 		}
-		if(output.size() == 1) {//½á¹ûÖ»ÓĞÖÕµã£¬±íÊ¾ÆğµãÓëÖÕµã²»´æÔÚÂ·¾¶£¬·µ»Ønull
+		if(output.size() == 1) {//ç»“æœåªæœ‰ç»ˆç‚¹ï¼Œè¡¨ç¤ºèµ·ç‚¹ä¸ç»ˆç‚¹ä¸å­˜åœ¨è·¯å¾„ï¼Œè¿”å›null
 			return null;
 		}
-		Collections.reverse(output);//·´Ïò±äÎªÕıÏò
+		Collections.reverse(output);//åå‘å˜ä¸ºæ­£å‘
 		return output;
 	}
 	
 	public List<OnePath> getOneSetByBFS(int server) {
 		/**
-		 * Ê¹ÓÃ¹ã¶ÈÓÅÏÈ±éÀúÕÒµ½ÓëÒ»¸ö·şÎñÆ÷µãÓĞ¹ØµÄËùÓĞÂ·¾¶
-		 * @param server ·şÎñÆ÷½Úµã¶ÔÓ¦ÍøÂç½ÚµãµÄ±àºÅ
-		 * @return ËùÓĞÂ·¾¶
+		 * ä½¿ç”¨å¹¿åº¦ä¼˜å…ˆéå†æ‰¾åˆ°ä¸ä¸€ä¸ªæœåŠ¡å™¨ç‚¹æœ‰å…³çš„æ‰€æœ‰è·¯å¾„
+		 * @param server æœåŠ¡å™¨èŠ‚ç‚¹å¯¹åº”ç½‘ç»œèŠ‚ç‚¹çš„ç¼–å·
+		 * @return æ‰€æœ‰è·¯å¾„
 		 */
 		List<OnePath> output = new ArrayList<OnePath>();
 		Queue<Point> queue = new LinkedList<Point>();
@@ -140,7 +140,7 @@ class SimpleGraph {
 		while(!queue.isEmpty()) {
 			Point p = queue.poll();
 			HashMap<Integer, OnePath> linkedPoint = struct.get(p.id);
-			for(Integer key: linkedPoint.keySet()) {//Ä¿²â´Ë´¦ÒªĞŞ¸Ä
+			for(Integer key: linkedPoint.keySet()) {//ç›®æµ‹æ­¤å¤„è¦ä¿®æ”¹
 				output.add(linkedPoint.get(key));
 				queue.offer(pointMap.get(key));
 //				if(pointMap.get(key).dist == INFINITY) {
@@ -154,15 +154,15 @@ class SimpleGraph {
 //				}
 			}
 		}
-		return new ArrayList<OnePath>(new HashSet<OnePath>(output));//È¥ÖØ
+		return new ArrayList<OnePath>(new HashSet<OnePath>(output));//å»é‡
 	}
 	
 	public List<List<Integer>> getAllPath(int start, int end) {
 		/**
-		 * Ò»¶ÔÒ»»ñÈ¡ËùÓĞÂ·¾¶£¬Õë¶Ô×î´óÁ÷×îĞ¡·ÑÓÃËã·¨Êä³ö·ûºÏ¹Ù·½¸ñÊ½µÄ½á¹û
-		 * @param start Æğµã
-		 * @param end ÖÕµã
-		 * @return ¶àÌõÂ·¾¶£¬ÀàËÆ¶şÎ¬Êı×é£¬Ã¿Ò»ĞĞ±íÊ¾Ò»ÌõÂ·¾¶
+		 * ä¸€å¯¹ä¸€è·å–æ‰€æœ‰è·¯å¾„ï¼Œé’ˆå¯¹æœ€å¤§æµæœ€å°è´¹ç”¨ç®—æ³•è¾“å‡ºç¬¦åˆå®˜æ–¹æ ¼å¼çš„ç»“æœ
+		 * @param start èµ·ç‚¹
+		 * @param end ç»ˆç‚¹
+		 * @return å¤šæ¡è·¯å¾„ï¼Œç±»ä¼¼äºŒç»´æ•°ç»„ï¼Œæ¯ä¸€è¡Œè¡¨ç¤ºä¸€æ¡è·¯å¾„
 		 */
 		int demand = 0;
 		List<List<Integer>> output = new ArrayList<List<Integer>>();
@@ -174,14 +174,14 @@ class SimpleGraph {
 					demand += o.band;
 				}
 			}
-		}//»ñÈ¡ÖÕµãµÄ×ÜĞèÇó
+		}//è·å–ç»ˆç‚¹çš„æ€»éœ€æ±‚
 		
-		while(demand > 0) {//Î´´ïµ½ĞèÇóÊ±½øĞĞµü´ú
-			List<Integer> path = bfs(start, end);//¹ã¶ÈÓÅÏÈ±éÀúËÑË÷Â·¾¶
+		while(demand > 0) {//æœªè¾¾åˆ°éœ€æ±‚æ—¶è¿›è¡Œè¿­ä»£
+			List<Integer> path = bfs(start, end);//å¹¿åº¦ä¼˜å…ˆéå†æœç´¢è·¯å¾„
 			if(path == null) {
-				break;//ÎŞÂ·¾¶±íÊ¾³öÏÖÒì³££¬Ö±½ÓÍË³öÊä³önull
+				break;//æ— è·¯å¾„è¡¨ç¤ºå‡ºç°å¼‚å¸¸ï¼Œç›´æ¥é€€å‡ºè¾“å‡ºnull
 			}
-			int band = INFINITY;//ÏûºÄ´ø¿íÈ¡Â·¾¶ÉÏµÄ×îĞ¡´ø¿í
+			int band = INFINITY;//æ¶ˆè€—å¸¦å®½å–è·¯å¾„ä¸Šçš„æœ€å°å¸¦å®½
 			for(int i = 0; i < path.size() - 1; i++) {
 				int one = path.get(i);
 				int two = path.get(i + 1);
@@ -190,11 +190,11 @@ class SimpleGraph {
 				}
 			}
 			
-			for(int i = 0; i < path.size() - 1; i++) {//¸ù¾İÏûºÄµÄ´ø¿í¸üĞÂÍ¼£¬ÒÔ±ãÓÚÏÂÒ»´Îµü´ú
+			for(int i = 0; i < path.size() - 1; i++) {//æ ¹æ®æ¶ˆè€—çš„å¸¦å®½æ›´æ–°å›¾ï¼Œä»¥ä¾¿äºä¸‹ä¸€æ¬¡è¿­ä»£
 				int one = path.get(i);
 				int two = path.get(i + 1);
 				struct.get(one).get(two).band -= band;
-				if(struct.get(one).get(two).band == 0) {//ÈôÂ·¾¶ÉÏµÄ´ø¿íÏûºÄÍêÖ±½ÓÉ¾³ı
+				if(struct.get(one).get(two).band == 0) {//è‹¥è·¯å¾„ä¸Šçš„å¸¦å®½æ¶ˆè€—å®Œç›´æ¥åˆ é™¤
 					struct.get(one).remove(two);
 				}
 			}

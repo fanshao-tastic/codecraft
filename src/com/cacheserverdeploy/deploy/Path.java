@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Path {
 	/**
-	 * @param pathList Â·¾¶Æ¬¶Î
-	 * @param start Æğµã
-	 * @param end ÖÕµã
+	 * @param pathList è·¯å¾„ç‰‡æ®µ
+	 * @param start èµ·ç‚¹
+	 * @param end ç»ˆç‚¹
 	 */
 	public List<OnePath> pathList;
 	public int start;
@@ -15,7 +15,7 @@ public class Path {
 	
 	public Path(int start, int end) {
 		/**
-		 * ¹¹Ôìº¯Êı
+		 * æ„é€ å‡½æ•°
 		 */
 		this.start = start;
 		this.end =end;
@@ -24,42 +24,55 @@ public class Path {
 	
 	public Path(int start, int end, List<OnePath> pathList) {
 		/**
-		 * ¹¹Ôìº¯Êı
-		 * @param pathList Â·¾¶Æ¬¶Î
+		 * æ„é€ å‡½æ•°
+		 * @param pathList è·¯å¾„ç‰‡æ®µ
 		 */
 		this(start, end);
 		for(OnePath onePath: pathList) {
-			this.addPath(onePath);//ÒÀ´Î½«Â·¾¶Æ¬¶Î¼ÓÈë
+			this.addPath(onePath);//ä¾æ¬¡å°†è·¯å¾„ç‰‡æ®µåŠ å…¥
 		}
 	}
 	
 	public void addPath(OnePath onepath) {
 		/**
-		 * ¼ÓÈëÒ»¸öÂ·¾¶Æ¬¶Î
+		 * åŠ å…¥ä¸€ä¸ªè·¯å¾„ç‰‡æ®µ
 		 */
-		if(pathList.isEmpty()) {//Èç¹ûÂ·¾¶Æ¬¶ÎÖĞÃ»ÓĞÂ·¾¶£¬Ö±½Ó¼ÓÈë·µ»Ø¼´¿É
+		if(pathList.isEmpty()) {//å¦‚æœè·¯å¾„ç‰‡æ®µä¸­æ²¡æœ‰è·¯å¾„ï¼Œç›´æ¥åŠ å…¥è¿”å›å³å¯
 			pathList.add(onepath);
 			return;
 		}
-		int i = 0;//·ñÔòËÑË÷ËùÓĞµ±Ç°Â·¾¶£¬¿´ÊÇ·ñÓĞÕıÏò»òÕß·´ÏòÇé¿ö
+		int i = 0;//å¦åˆ™æœç´¢æ‰€æœ‰å½“å‰è·¯å¾„ï¼Œçœ‹æ˜¯å¦æœ‰æ­£å‘æˆ–è€…åå‘æƒ…å†µ
 		for(; i < pathList.size(); i++) {
 			OnePath thisOne = pathList.get(i);
-			if(onepath.startPoint == thisOne.startPoint && onepath.endPoint == thisOne.endPoint) {//ÕıÏò
+			if(onepath.startPoint == thisOne.startPoint && onepath.endPoint == thisOne.endPoint) {//æ­£å‘
 				thisOne.band += onepath.band;
 				return;
-			} else if(onepath.startPoint == thisOne.endPoint && onepath.endPoint == thisOne.startPoint) {//·´Ïò
-				thisOne.band -= onepath.band;
+			} else if(onepath.startPoint == thisOne.endPoint && onepath.endPoint == thisOne.startPoint) {//åå‘
+				if(thisOne.band > onepath.band) {
+					thisOne.band -= onepath.band;
+				} else if(thisOne.band == onepath.band){
+					pathList.remove(i);
+				} else {
+					thisOne.band = onepath.band - thisOne.band;
+					thisOne.startPoint = onepath.startPoint;
+					thisOne.endPoint = onepath.endPoint;
+				}
+				if(thisOne.band < 0) {//point3 fatal!!!!!!!!!!!!!!!!!!
+					System.out.println("Usually!");
+					System.out.println(thisOne.band);
+				}
 				return;
+				//thisOne.band -= onepath.band;
 			}
 		}
-		if(i == pathList.size()) {//Î´³öÏÖÕıÏò»òÕß·´ÏòÇé¿ö£¬Ö±½Ó¼ÓÈë·µ»Ø
+		if(i == pathList.size()) {//æœªå‡ºç°æ­£å‘æˆ–è€…åå‘æƒ…å†µï¼Œç›´æ¥åŠ å…¥è¿”å›
 			pathList.add(onepath);
 		}
 	}
 	
 	public int sumFlow() {
 		/**
-		 ** »ñÈ¡Â·¾¶µÄ×ÜÁ÷Á¿
+		 ** è·å–è·¯å¾„çš„æ€»æµé‡
 		 */
 		int output = 0;
 		for(OnePath o : pathList) {
@@ -72,8 +85,8 @@ public class Path {
 	
 	public List<List<Integer>> fromPathToString() {
 		/**
-		 * ½á¹û×ª»»º¯Êı£¬·Ç³£¹Ø¼ü
-		 * @return ·µ»Ø½á¹û£¬¾ßÌåÊÇ¿¿getAllPathÊµÏÖµÄ
+		 * ç»“æœè½¬æ¢å‡½æ•°ï¼Œéå¸¸å…³é”®
+		 * @return è¿”å›ç»“æœï¼Œå…·ä½“æ˜¯é getAllPathå®ç°çš„
 		 */
 		SimpleGraph simple = new SimpleGraph(this);
 		return simple.getAllPath(start, end);

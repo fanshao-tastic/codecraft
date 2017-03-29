@@ -25,8 +25,8 @@ public class Main
 
         String graphFilePath = args[0];
         String resultFilePath = args[1];
-//    	String graphFilePath ="C:\\Users\\fan\\Desktop\\github\\codecraft1\\resource\\demo2\\2\\case6.txt";
-//       String resultFilePath ="C:\\Users\\fan\\Desktop\\github\\codecraft1\\resource\\out9.txt";
+    	//String graphFilePath ="C:\\Users\\fan\\Desktop\\github\\codecraft1\\resource\\demo2\\1\\case3.txt";
+       // String resultFilePath ="C:\\Users\\fan\\Desktop\\github\\codecraft1\\resource\\out9.txt";
 
         LogUtil.printLog("Begin");
 

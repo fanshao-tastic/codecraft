@@ -49,114 +49,178 @@ public class Deploy implements Serializable {
 		}
 
 		// ----FirstStepStart
-		//FirstDeploy firstdeploy = new FirstDeploy();
+		// FirstDeploy firstdeploy = new FirstDeploy();
 		List<Map<Integer, Integer>> FirstStepOut = FirstDeploy.Firstdeploy(graphContent);
-		
+
 		// ----FirstStepEND
 
 		Graph graph = new Graph(netVertexNum, edgeList, consumerVertexList, serverList);// 构图
 		// 得出每个网络节点的权值=节点数*all_band/all_cost,排序由高到低
-		//Map<Integer, Integer> nodeValue = new LinkedHashMap<Integer, Integer>();
-		//nodeValue = getNodeValue(netVertexNum, graph, edgeList);		
+		// Map<Integer, Integer> nodeValue = new LinkedHashMap<Integer,
+		// Integer>();
+		// nodeValue = getNodeValue(netVertexNum, graph, edgeList);
 		List<Integer> must = graph.mustServer();
 		List<List<Integer>> out = null;
-		List<List<Integer>> result= null;
-		int ALL_COST=999999;
-		int count = 1000;
-		int flag=0;
+		List<List<Integer>> result = null;
+		int ALL_COST = 999999;
+		int count = 10000;
+		int flag = 0;
+		int flag2 = 0;
+		int trueflagnum = 0;
+		int falseflagnum = 0;
+		if (netVertexNum < 200) {
+			trueflagnum = 1000;
+			falseflagnum = 1000;
+		} else if (netVertexNum > 200 && netVertexNum < 500) {
+			trueflagnum = 200;
+			falseflagnum = 600;
+		} else {
+			trueflagnum = 5;
+			falseflagnum = 300;
+		}
 		while (count > 0) {
 			serverList = new ArrayList<Integer>();
-			for(Integer i : FirstStepOut.get(1).keySet()){
-				 serverList.add(i);
+			for (Integer i : FirstStepOut.get(1).keySet()) {
+				int rd = Math.random() >= 0.8 ? 1 : 0;
+				// if(rd==1){
+				serverList.add(i);
+				// }
 			}
 			for (Integer i : must) {
-				//System.out.println(i);
+				// System.out.println(i);
 				if (i != (netVertexNum + 1)) {
 					serverList.add(i);
 				}
 			}
 			count--;
-			int  FirstNum=FirstStepOut.get(0).size();
-			int  countTime=0;
-			for(Integer i : FirstStepOut.get(0).keySet()){
+			int FirstNum = FirstStepOut.get(0).size();
+			int countTime = 0;
+			for (Integer i : FirstStepOut.get(0).keySet()) {
 				countTime++;
-				if(countTime<=FirstNum*0.7){
-					int rd=Math.random()>=0.2?1:0;
-					if(rd==1){
+				if (countTime <= FirstNum * 0.7) {
+					int rd = Math.random() >= 0.3 ? 1 : 0;
+					if (rd == 1) {
 						serverList.add(i);
 					}
-					
-				}else if(countTime>FirstNum*0.7 && countTime<=FirstNum*0.9){
-					int rd=Math.random()>=0.5?1:0;
-					if(rd==1){
+
+				} else if (countTime > FirstNum * 0.7 && countTime <= FirstNum * 0.9) {
+					int rd = Math.random() >= 0.6 ? 1 : 0;
+					if (rd == 1) {
 						serverList.add(i);
 					}
-				}else{
-					int rd=Math.random()>0.7?1:0;
-					if(rd==1){
+				} else {
+					int rd = Math.random() > 0.7 ? 1 : 0;
+					if (rd == 1) {
 						serverList.add(i);
 					}
 				}
-				
-			}						
-//			 serverList.add(3);
-//			 serverList.add(0);
-//			 serverList.add(24);
-//			 serverList.add(17);
-			//graph.setServerList(serverList);
+
+			}
+			// serverList.add(3);
+			// serverList.add(0);
+			// serverList.add(24);
+			// serverList.add(17);
+			// graph.setServerList(serverList);
 			graph = new Graph(netVertexNum, edgeList, consumerVertexList, serverList);
-//			for(Integer i:serverList){
-//				System.out.print(i+"  ");
-//			}
-		//	System.out.println();
+			// for(Integer i:serverList){
+			// System.out.print(i+" ");
+			// }
+			// System.out.println();
 			out = getOutput(graph, demand);// 一定要使用副本
-			if (out.get(out.size()-1).get(0) == 0) {
-				out.remove(out.size()-1);
+			if (out.get(out.size() - 1).get(0) == 0) {
+//				if (judge(graph, out)) {
+//					System.out.println("true++++++");
+//				} else {
+//					System.out.println("false+++++");
+//				}
+				out.remove(out.size() - 1);
 				int fee = sumFee(graph, serverCost, out);// 计算总费用
 				System.out.println(fee);
 				flag++;
-				if(fee<ALL_COST){
-					ALL_COST=fee;
-					result=out;
-					flag =0;
+				if (fee < ALL_COST) {
+					ALL_COST = fee;
+					result = out;
+					flag = 0;
+					// break;
 				}
-				if(flag>100){
-					break;
-				}
+
+			} else {
+				flag2++;
+			}
+			if (flag > trueflagnum) {
+				break;
+			}
+			if (flag2 > falseflagnum) {
+				break;
 			}
 		}
-		//return null;
+		// if(judge(graph,out)){
+		// System.out.println("1");
+		// }else{
+		// System.out.println("0");
+		// }
+		// return null;
 		System.out.println("+++++++++++++++");
 		System.out.println(ALL_COST);
 		System.out.println(result);
 		return getFinalStringArray(result, map); // 最终返回字符串数组
-		//return null;
+		// return null;
 	}
 
-//	private static Map<Integer, Integer> getNodeValue(int netVertexNum, Graph graph, Edge[] edgeList) {
-//		// TODO Auto-generated method stub
-//		Map<Integer, Integer> nodeValue = new LinkedHashMap<Integer, Integer>();
-//		for (int i = 0; i < netVertexNum; i++) {
-//			int band = 0;
-//			int count = 0;
-//			int temp = graph.struct[i].size();
-//			// System.out.print(temp + " ");
-//			if (graph.struct[i].size() != 0) {
-//				for (Integer j : graph.struct[i].keySet()) {
-//					for (int k = 0; k < edgeList.length; k++) {
-//						if (edgeList[k].id == graph.struct[i].get(j)) {
-//							band += edgeList[k].getBand();
-//							count += edgeList[k].getBand() * edgeList[k].getPrice();
-//							break;
-//						}
-//					}
-//				}
-//				nodeValue.put(i, temp * band * 100 / count);
-//			}
-//		}
-//		sortMap(nodeValue);
-//		return nodeValue;
-//	}
+	public static boolean judge(Graph g, List<List<Integer>> out) {
+		Graph graph = g.myclone();
+		for (List<Integer> oneline : out) {
+			int band = oneline.get(oneline.size() - 1);
+			for (int i = 0; i < oneline.size() - 2; i++) {
+				int start = oneline.get(i);
+				int end = oneline.get(i + 1);
+				if (!graph.struct[start].containsKey(end)) {
+					return false;
+				}
+				Edge e = graph.edgeList.get(graph.struct[start].get(end));
+				if (e.band < band) {
+					return false;
+				}
+				e.band -= band;
+				if (e.band == 0) {
+					graph.struct[start].remove(end);
+				}
+			}
+		}
+		for (ConsumerVertex c : graph.consumerList) {
+			int v = c.connectedVertex;
+			if (graph.struct[v].containsKey(graph.netVertexNum - 1)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// private static Map<Integer, Integer> getNodeValue(int netVertexNum, Graph
+	// graph, Edge[] edgeList) {
+	// // TODO Auto-generated method stub
+	// Map<Integer, Integer> nodeValue = new LinkedHashMap<Integer, Integer>();
+	// for (int i = 0; i < netVertexNum; i++) {
+	// int band = 0;
+	// int count = 0;
+	// int temp = graph.struct[i].size();
+	// // System.out.print(temp + " ");
+	// if (graph.struct[i].size() != 0) {
+	// for (Integer j : graph.struct[i].keySet()) {
+	// for (int k = 0; k < edgeList.length; k++) {
+	// if (edgeList[k].id == graph.struct[i].get(j)) {
+	// band += edgeList[k].getBand();
+	// count += edgeList[k].getBand() * edgeList[k].getPrice();
+	// break;
+	// }
+	// }
+	// }
+	// nodeValue.put(i, temp * band * 100 / count);
+	// }
+	// }
+	// sortMap(nodeValue);
+	// return nodeValue;
+	// }
 
 	/**
 	 * 对map，根据value的值来排序
@@ -448,10 +512,12 @@ public class Deploy implements Serializable {
 					record.add(cv.demand - clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand); // 已经满足的需求
 					record.add(clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand); // 消费节点的剩余需求
 					warning.add(record);
-					//String out = "Consumer Vertex NO." + cv.id + " is not fully servered ! ";
-//					out += "demand: " + cv.demand + " left: "
-//							+ clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand;
-					//System.out.println(out);
+					// String out = "Consumer Vertex NO." + cv.id + " is not
+					// fully servered ! ";
+					// out += "demand: " + cv.demand + " left: "
+					// + clone.edgeList.get(map.get(clone.netVertexNum -
+					// 1)).upBand;
+					// System.out.println(out);
 				}
 			}
 			for (Integer i : clone.struct[clone.netVertexNum - 2].keySet()) {
@@ -463,9 +529,11 @@ public class Deploy implements Serializable {
 						- clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).upBand); // 服务器已输出的流量
 				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).upBand); // 服务器剩余输出能力
 				warning.add(record);
-			//	String out = "Server Vertex NO." + i + " is not fully used ! ";
-				//out += "ability " + record.get(2) + " left: " + record.get(4);
-				//System.out.println(out);
+				// String out = "Server Vertex NO." + i + " is not fully used !
+				// ";
+				// out += "ability " + record.get(2) + " left: " +
+				// record.get(4);
+				// System.out.println(out);
 			}
 			List<Integer> t = new ArrayList<Integer>();
 			t.add(-1);// 最后一行为-1，代表异常

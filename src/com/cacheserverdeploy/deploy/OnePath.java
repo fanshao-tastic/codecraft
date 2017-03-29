@@ -2,18 +2,18 @@ package com.cacheserverdeploy.deploy;
 
 public class OnePath {
 	/**
-	 * ±íÊ¾Â·¾¶Æ¬¶Î
-	 * @param startPoint Æğµãid
-	 * @param endPoint ÖÕµãid
-	 * @param band Õ¼ÓÃ´ø¿í
+	 * è¡¨ç¤ºè·¯å¾„ç‰‡æ®µ
+	 * @param startPoint èµ·ç‚¹id
+	 * @param endPoint ç»ˆç‚¹id
+	 * @param band å ç”¨å¸¦å®½
 	 */
 	public int startPoint;
 	public int endPoint;
 	public int band;
 	
-	public OnePath(int startPoint, int endPoint, int band) { //OnePathÀàµÄ¹¹Ôìº¯Êı
+	public OnePath(int startPoint, int endPoint, int band) { //OnePathç±»çš„æ„é€ å‡½æ•°
 		/**
-		 *¹¹Ôìº¯Êı
+		 *æ„é€ å‡½æ•°
 		 */
 		this.startPoint = startPoint;
 		this.endPoint = endPoint;

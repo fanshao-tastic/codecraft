@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class ConsumerVertex implements Comparable<ConsumerVertex>, Serializable{
 	/**
-	 * Ïû·Ñ½ÚµãÀà
-	 * @param id ±àºÅ
-	 * @param connectedVertex ÏàÁ¬µÄÍøÂç½Úµã±àºÅ
-	 * @param demand ĞèÇó´ø¿í
+	 * æ¶ˆè´¹èŠ‚ç‚¹ç±»
+	 * @param id ç¼–å·
+	 * @param connectedVertex ç›¸è¿çš„ç½‘ç»œèŠ‚ç‚¹ç¼–å·
+	 * @param demand éœ€æ±‚å¸¦å®½
 	 */
 	private static final long serialVersionUID = -6111779056521019663L;
 	public int id;	
@@ -16,21 +16,21 @@ public class ConsumerVertex implements Comparable<ConsumerVertex>, Serializable{
 	
 	public ConsumerVertex(String parameters) { 
 		/**
-		 * @param parameters ¸ù¾İÑùÀıÎÄ¼şµÄ×Ö·û´®ÊäÈë ×Ö·û´®°´ÕÕ¿Õ¸ñ·Ö¸î
+		 * @param parameters æ ¹æ®æ ·ä¾‹æ–‡ä»¶çš„å­—ç¬¦ä¸²è¾“å…¥ å­—ç¬¦ä¸²æŒ‰ç…§ç©ºæ ¼åˆ†å‰²
 		 */
 		
 		String [] forInput = parameters.split(" ");
-		this.id = Integer.parseInt(forInput[0]);	//»ñÈ¡Ïû·Ñ½Úµãid
-		this.connectedVertex = Integer.parseInt(forInput[1]);//»ñÈ¡Ïû·Ñ½ÚµãÁ¬½ÓµÄÍøÂç½Úµã
-		this.demand = Integer.parseInt(forInput[2]);//»ñÈ¡ĞèÇó´ø¿í
+		this.id = Integer.parseInt(forInput[0]);	//è·å–æ¶ˆè´¹èŠ‚ç‚¹id
+		this.connectedVertex = Integer.parseInt(forInput[1]);//è·å–æ¶ˆè´¹èŠ‚ç‚¹è¿æ¥çš„ç½‘ç»œèŠ‚ç‚¹
+		this.demand = Integer.parseInt(forInput[2]);//è·å–éœ€æ±‚å¸¦å®½
 	}
 
 	@Override
 	public int compareTo(ConsumerVertex another) {
 		/**
-		 * @param another ÁíÒ»¸öÏû·Ñ½ÚµãÊµÀı
+		 * @param another å¦ä¸€ä¸ªæ¶ˆè´¹èŠ‚ç‚¹å®ä¾‹
 		 */
-		//ÖØĞ´compareTo·½·¨£¬µ±¶Ô¸ÃÀàµÄÊı×é½øĞĞÅÅĞòÊ±£¬°´ÕÕÁ½ÕßµÄĞèÇó½øĞĞÅÅĞò
+		//é‡å†™compareToæ–¹æ³•ï¼Œå½“å¯¹è¯¥ç±»çš„æ•°ç»„è¿›è¡Œæ’åºæ—¶ï¼ŒæŒ‰ç…§ä¸¤è€…çš„éœ€æ±‚è¿›è¡Œæ’åº
 		return new Integer(this.demand).compareTo(new Integer(another.demand));
 	}    	
 }

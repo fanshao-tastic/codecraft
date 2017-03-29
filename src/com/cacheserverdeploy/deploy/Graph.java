@@ -17,17 +17,17 @@ import java.util.Set;
 
 public class Graph implements Serializable{
 	/**
-	 * Í¼Àà
-	 * @param struct ±£´æÍ¼µÄ½á¹¹£¬´æ´¢ĞÎÊ½ÎªÁÚ½Ó±í
-	 * @param netVertexNum ÍøÂç½ÚµãÊıÄ¿
-	 * @param edgeList ±ß¼¯
-	 * @param serverList ·şÎñÆ÷±í
-	 * @param consumerList Ïû·Ñ½Úµã
-	 * @param maxCount ×î´ó·şÎñÆ÷¸öÊı
-	 * @param minCount ×îÉÙ·şÎñÆ÷µÄ¸öÊı
+	 * å›¾ç±»
+	 * @param struct ä¿å­˜å›¾çš„ç»“æ„ï¼Œå­˜å‚¨å½¢å¼ä¸ºé‚»æ¥è¡¨
+	 * @param netVertexNum ç½‘ç»œèŠ‚ç‚¹æ•°ç›®
+	 * @param edgeList è¾¹é›†
+	 * @param serverList æœåŠ¡å™¨è¡¨
+	 * @param consumerList æ¶ˆè´¹èŠ‚ç‚¹
+	 * @param maxCount æœ€å¤§æœåŠ¡å™¨ä¸ªæ•°
+	 * @param minCount æœ€å°‘æœåŠ¡å™¨çš„ä¸ªæ•°
 	 */
 	private static final long serialVersionUID = 872390113109L;
-	public Map<Integer, Integer> [] struct; //ArrayListÊı×é£¬ÏÂ±êÎª½Úµãid£¬ArrayListÖĞµÄÔªËØÊÇÊı¶Ô,µÚÒ»¸öÊıÎª½Úµãid,µÚ¶ş¸öÊıÎªÁ´Â·id
+	public Map<Integer, Integer> [] struct; //ArrayListæ•°ç»„ï¼Œä¸‹æ ‡ä¸ºèŠ‚ç‚¹idï¼ŒArrayListä¸­çš„å…ƒç´ æ˜¯æ•°å¯¹,ç¬¬ä¸€ä¸ªæ•°ä¸ºèŠ‚ç‚¹id,ç¬¬äºŒä¸ªæ•°ä¸ºé“¾è·¯id
 	public int netVertexNum;
 	public List<Edge> edgeList;
 	public List<Integer> serverList;
@@ -36,8 +36,8 @@ public class Graph implements Serializable{
 	public int maxCount;
 	public int minCount;
 	
-	public Graph(int netVertexNum, Edge [] edgeList, List<ConsumerVertex> consumerList, List<Integer> serverList) { //¹¹Ôì·½·¨
-		this.struct = new HashMap [netVertexNum + 2];
+	public Graph(int netVertexNum, Edge [] edgeList, List<ConsumerVertex> consumerList, List<Integer> serverList) { //æ„é€ æ–¹æ³•
+		this.struct = new HashMap[netVertexNum + 2];
 		this.edgeList = new ArrayList<Edge>();
 		this.serverList = serverList;
 		this.consumerList = consumerList;
@@ -46,10 +46,10 @@ public class Graph implements Serializable{
 		
 		this.minCount = 0;
 		for(int i = 0; i < edgeList.length;i++) {
-			this.edgeList.add(edgeList[i]);//¼ÓÈëÔ­Ê¼µÄ±ß
+			this.edgeList.add(edgeList[i]);//åŠ å…¥åŸå§‹çš„è¾¹
 		}
- 		this.netVertexNum = netVertexNum + 2;//ÍøÂç½ÚµãÊıÄ¿+2£¬ĞÂ½¨Á½¸öĞéÄâµÄÍøÂç½Úµã£¬Ò»¸ö±íÊ¾×Ü·şÎñÆ÷£¬Ò»¸ö±íÊ¾×ÜÏû·Ñ½Úµã
-		//³õÊ¼»¯¹ı³Ì
+ 		this.netVertexNum = netVertexNum + 2;//ç½‘ç»œèŠ‚ç‚¹æ•°ç›®+2ï¼Œæ–°å»ºä¸¤ä¸ªè™šæ‹Ÿçš„ç½‘ç»œèŠ‚ç‚¹ï¼Œä¸€ä¸ªè¡¨ç¤ºæ€»æœåŠ¡å™¨ï¼Œä¸€ä¸ªè¡¨ç¤ºæ€»æ¶ˆè´¹èŠ‚ç‚¹
+		//åˆå§‹åŒ–è¿‡ç¨‹
 		for(int i = 0; i < netVertexNum + 2; i++) {
 			struct[i] = new LinkedHashMap<Integer, Integer>();
 		}
@@ -60,12 +60,12 @@ public class Graph implements Serializable{
 			struct[thisEdge.endPoint].put(thisEdge.startPoint, i);
 		}
 		
-		Set<Integer> set = new HashSet<Integer>();//ĞÂ½¨Ò»¸öSet£¬ÀûÓÃcontainsº¯Êı²éÕÒÓëÏû·Ñ½ÚµãÏàÁ¬µÄÍøÂç½Úµã
+		Set<Integer> set = new HashSet<Integer>();//æ–°å»ºä¸€ä¸ªSetï¼Œåˆ©ç”¨containså‡½æ•°æŸ¥æ‰¾ä¸æ¶ˆè´¹èŠ‚ç‚¹ç›¸è¿çš„ç½‘ç»œèŠ‚ç‚¹
 		for(int i = 0; i < consumerList.size(); i++) {
 			set.add(consumerList.get(i).connectedVertex);
 		}
 		
-		int [] serverBand = new int [serverList.size()];//·şÎñÆ÷½ÚµãµÄÊä³öÄÜÁ¦,Èô¸ÃµãºÍÏû·Ñ½ÚµãÁ¬½Ó£¬Êä³öÄÜÁ¦»á¼ÓÈëÏû·Ñ½ÚµãµÄĞèÇó
+		int [] serverBand = new int [serverList.size()];//æœåŠ¡å™¨èŠ‚ç‚¹çš„è¾“å‡ºèƒ½åŠ›,è‹¥è¯¥ç‚¹å’Œæ¶ˆè´¹èŠ‚ç‚¹è¿æ¥ï¼Œè¾“å‡ºèƒ½åŠ›ä¼šåŠ å…¥æ¶ˆè´¹èŠ‚ç‚¹çš„éœ€æ±‚
 
 		for(int i = 0; i < serverList.size(); i++) {
 			int temp = getOuputAbility(i);
@@ -81,64 +81,64 @@ public class Graph implements Serializable{
 		}
 		
 		int id = this.edgeList.size() - 1;
-		for(int i = 0; i < serverList.size(); i++) {//Ôö¼Ó·şÎñÆ÷ĞéÄâ½Úµã,¶¨ÎªËùÓĞ½ÚµãµÄµ¹ÊıµÚ¶ş¸ö£¬Ö»ÓĞ³öÃ»ÓĞÈë
+		for(int i = 0; i < serverList.size(); i++) {//å¢åŠ æœåŠ¡å™¨è™šæ‹ŸèŠ‚ç‚¹,å®šä¸ºæ‰€æœ‰èŠ‚ç‚¹çš„å€’æ•°ç¬¬äºŒä¸ªï¼Œåªæœ‰å‡ºæ²¡æœ‰å…¥
 			int start = struct.length - 2;
 			int end = serverList.get(i);
-			id++;//±ßµÄid×ÔÔö1
-			int band = serverBand[i];//´ø¿í±íÊ¾Îª¸ÃµãµÄÊä³öÄÜÁ¦
-			int price = 0;//ĞéÄâ½Úµã£¬µ¥¼ÛÎª0
+			id++;//è¾¹çš„idè‡ªå¢1
+			int band = serverBand[i];//å¸¦å®½è¡¨ç¤ºä¸ºè¯¥ç‚¹çš„è¾“å‡ºèƒ½åŠ›
+			int price = 0;//è™šæ‹ŸèŠ‚ç‚¹ï¼Œå•ä»·ä¸º0
 			Edge edge = new Edge(id, start, end, band, price);
 			this.edgeList.add(edge);
 			struct[struct.length - 2].put(end, id);
 		}
 		
-		for(int i = 0; i < consumerList.size();i++) {//Ôö¼ÓÏû·Ñ×Ü½áµã,¶¨ÎªËùÓĞ½ÚµãµÄ×îºóÒ»¸ö,Ö»ÓĞÈëÃ»ÓĞ³ö
+		for(int i = 0; i < consumerList.size();i++) {//å¢åŠ æ¶ˆè´¹æ€»ç»“ç‚¹,å®šä¸ºæ‰€æœ‰èŠ‚ç‚¹çš„æœ€åä¸€ä¸ª,åªæœ‰å…¥æ²¡æœ‰å‡º
 			id++;
 			int start = consumerList.get(i).connectedVertex;
 			int end = struct.length - 1;
-			int band = consumerList.get(i).demand;//´ø¿í±íÊ¾ÎªĞèÇó
-			int price = 0;//ĞéÄâ½Úµã£¬µ¥¼ÛÎª0
+			int band = consumerList.get(i).demand;//å¸¦å®½è¡¨ç¤ºä¸ºéœ€æ±‚
+			int price = 0;//è™šæ‹ŸèŠ‚ç‚¹ï¼Œå•ä»·ä¸º0
 			Edge edge = new Edge(id, start, end, band, price);
 			this.edgeList.add(edge);
 			struct[start].put(end, id);
 		}
 		
-		while(true) {//É¾³ıµ¥Ö§
-			boolean flag = true;
-			for(int i = 0; i < struct.length; i++) {
-				if(struct[i].size() == 1) {//´æÔÚµ¥Ö§£¬½«¸ÃµãµÄÁÚ½Ó±íÖÃ¿Õ£¬É¾³ıËùÓĞÓë¸ÃµãµÄÁ¬½Ó
-					flag = false;
-					//System.out.println("ONE");
-					for(Integer x : struct[i].keySet()) {
-						struct[x].remove(i);
-					}
-					struct[i].clear();
-				}
-			}
-			if(flag) {
-				break;
-			}
-		}
+//		while(true) {//åˆ é™¤å•æ”¯
+//			boolean flag = true;
+//			for(int i = 0; i < struct.length; i++) {
+//				if(struct[i].size() == 1) {//å­˜åœ¨å•æ”¯ï¼Œå°†è¯¥ç‚¹çš„é‚»æ¥è¡¨ç½®ç©ºï¼Œåˆ é™¤æ‰€æœ‰ä¸è¯¥ç‚¹çš„è¿æ¥
+//					flag = false;
+//					//System.out.println("ONE");
+//					for(Integer x : struct[i].keySet()) {
+//						struct[x].remove(i);
+//					}
+//					struct[i].clear();
+//				}
+//			}
+//			if(flag) {
+//				break;
+//			}
+//		}
 		
-		Map<Integer, ConsumerVertex> m = new HashMap<Integer, ConsumerVertex>();
-		int demand = 0;
-    	for(int i = 0;i < consumerList.size(); i++) {
-    		m.put(consumerList.get(i).connectedVertex, consumerList.get(i));
-    		demand += consumerList.get(i).demand;//¼ÆËã×ÜĞèÇó
-    	}
-    	
-		List<Integer> eachVertex = new ArrayList<Integer>();
-    	for(int i = 0; i < struct.length - 2; i++) {
-    		int temp = getOuputAbility(i);
-    		eachVertex.add(temp);
-    	}
-    	
-    	Collections.sort(eachVertex);
-    	Collections.reverse(eachVertex);
-    	for(int t = 0; t < demand; minCount++) {
-    		t += eachVertex.get(minCount);
-    	}
-    	minCount++; //È·¶¨·şÎñÆ÷¸öÊıÏÂÏŞ
+//		Map<Integer, ConsumerVertex> m = new HashMap<Integer, ConsumerVertex>();
+//		int demand = 0;
+//    	for(int i = 0;i < consumerList.size(); i++) {
+//    		m.put(consumerList.get(i).connectedVertex, consumerList.get(i));
+//    		demand += consumerList.get(i).demand;//è®¡ç®—æ€»éœ€æ±‚
+//    	}
+//    	
+//		List<Integer> eachVertex = new ArrayList<Integer>();
+//    	for(int i = 0; i < struct.length - 2; i++) {
+//    		int temp = getOuputAbility(i);
+//    		eachVertex.add(temp);
+//    	}
+//    	
+//    	Collections.sort(eachVertex);
+//    	Collections.reverse(eachVertex);
+//    	for(int t = 0; t < demand; minCount++) {
+//    		t += eachVertex.get(minCount);
+//    	}
+//    	minCount++; //ç¡®å®šæœåŠ¡å™¨ä¸ªæ•°ä¸‹é™
 		
 	}
 
@@ -155,12 +155,12 @@ public class Graph implements Serializable{
 		}
 		serverList=newList;
 		this.serverList=newList;
-		Set<Integer> set = new HashSet<Integer>();//ĞÂ½¨Ò»¸öSet£¬ÀûÓÃcontainsº¯Êı²éÕÒÓëÏû·Ñ½ÚµãÏàÁ¬µÄÍøÂç½Úµã
+		Set<Integer> set = new HashSet<Integer>();//æ–°å»ºä¸€ä¸ªSetï¼Œåˆ©ç”¨containså‡½æ•°æŸ¥æ‰¾ä¸æ¶ˆè´¹èŠ‚ç‚¹ç›¸è¿çš„ç½‘ç»œèŠ‚ç‚¹
 		for(int i = 0; i < consumerList.size(); i++) {
 			set.add(consumerList.get(i).connectedVertex);
 		}
 		
-		int [] serverBand = new int [serverList.size()];//·şÎñÆ÷½ÚµãµÄÊä³öÄÜÁ¦,Èô¸ÃµãºÍÏû·Ñ½ÚµãÁ¬½Ó£¬Êä³öÄÜÁ¦»á¼ÓÈëÏû·Ñ½ÚµãµÄĞèÇó
+		int [] serverBand = new int [serverList.size()];//æœåŠ¡å™¨èŠ‚ç‚¹çš„è¾“å‡ºèƒ½åŠ›,è‹¥è¯¥ç‚¹å’Œæ¶ˆè´¹èŠ‚ç‚¹è¿æ¥ï¼Œè¾“å‡ºèƒ½åŠ›ä¼šåŠ å…¥æ¶ˆè´¹èŠ‚ç‚¹çš„éœ€æ±‚
 
 		for(int i = 0; i < serverList.size(); i++) {
 			int temp = getOuputAbility(i);
@@ -176,32 +176,32 @@ public class Graph implements Serializable{
 		}
 		
 		int id = this.edgeList.size() - 1;
-		for(int i = 0; i < serverList.size(); i++) {//Ôö¼Ó·şÎñÆ÷ĞéÄâ½Úµã,¶¨ÎªËùÓĞ½ÚµãµÄµ¹ÊıµÚ¶ş¸ö£¬Ö»ÓĞ³öÃ»ÓĞÈë
+		for(int i = 0; i < serverList.size(); i++) {//å¢åŠ æœåŠ¡å™¨è™šæ‹ŸèŠ‚ç‚¹,å®šä¸ºæ‰€æœ‰èŠ‚ç‚¹çš„å€’æ•°ç¬¬äºŒä¸ªï¼Œåªæœ‰å‡ºæ²¡æœ‰å…¥
 			int start = struct.length - 2;
 			int end = serverList.get(i);
-			id++;//±ßµÄid×ÔÔö1
-			int band = serverBand[i];//´ø¿í±íÊ¾Îª¸ÃµãµÄÊä³öÄÜÁ¦
-			int price = 0;//ĞéÄâ½Úµã£¬µ¥¼ÛÎª0
+			id++;//è¾¹çš„idè‡ªå¢1
+			int band = serverBand[i];//å¸¦å®½è¡¨ç¤ºä¸ºè¯¥ç‚¹çš„è¾“å‡ºèƒ½åŠ›
+			int price = 0;//è™šæ‹ŸèŠ‚ç‚¹ï¼Œå•ä»·ä¸º0
 			Edge edge = new Edge(id, start, end, band, price);
 			this.edgeList.add(edge);
 			struct[struct.length - 2].put(end, id);
 		}
 		
-		for(int i = 0; i < consumerList.size();i++) {//Ôö¼ÓÏû·Ñ×Ü½áµã,¶¨ÎªËùÓĞ½ÚµãµÄ×îºóÒ»¸ö,Ö»ÓĞÈëÃ»ÓĞ³ö
+		for(int i = 0; i < consumerList.size();i++) {//å¢åŠ æ¶ˆè´¹æ€»ç»“ç‚¹,å®šä¸ºæ‰€æœ‰èŠ‚ç‚¹çš„æœ€åä¸€ä¸ª,åªæœ‰å…¥æ²¡æœ‰å‡º
 			id++;
 			int start = consumerList.get(i).connectedVertex;
 			int end = struct.length - 1;
-			int band = consumerList.get(i).demand;//´ø¿í±íÊ¾ÎªĞèÇó
-			int price = 0;//ĞéÄâ½Úµã£¬µ¥¼ÛÎª0
+			int band = consumerList.get(i).demand;//å¸¦å®½è¡¨ç¤ºä¸ºéœ€æ±‚
+			int price = 0;//è™šæ‹ŸèŠ‚ç‚¹ï¼Œå•ä»·ä¸º0
 			Edge edge = new Edge(id, start, end, band, price);
 			this.edgeList.add(edge);
 			struct[start].put(end, id);
 		}
 		
-		while(true) {//É¾³ıµ¥Ö§
+		while(true) {//åˆ é™¤å•æ”¯
 			boolean flag = true;
 			for(int i = 0; i < struct.length; i++) {
-				if(struct[i].size() == 1) {//´æÔÚµ¥Ö§£¬½«¸ÃµãµÄÁÚ½Ó±íÖÃ¿Õ£¬É¾³ıËùÓĞÓë¸ÃµãµÄÁ¬½Ó
+				if(struct[i].size() == 1) {//å­˜åœ¨å•æ”¯ï¼Œå°†è¯¥ç‚¹çš„é‚»æ¥è¡¨ç½®ç©ºï¼Œåˆ é™¤æ‰€æœ‰ä¸è¯¥ç‚¹çš„è¿æ¥
 					flag = false;
 					//System.out.println("ONE");
 					for(Integer x : struct[i].keySet()) {
@@ -219,7 +219,7 @@ public class Graph implements Serializable{
 		int demand = 0;
     	for(int i = 0;i < consumerList.size(); i++) {
     		m.put(consumerList.get(i).connectedVertex, consumerList.get(i));
-    		demand += consumerList.get(i).demand;//¼ÆËã×ÜĞèÇó
+    		demand += consumerList.get(i).demand;//è®¡ç®—æ€»éœ€æ±‚
     	}
     	
 		List<Integer> eachVertex = new ArrayList<Integer>();
@@ -233,15 +233,15 @@ public class Graph implements Serializable{
 //    	for(int t = 0; t < demand; minCount++) {
 //    		t += eachVertex.get(minCount);
 //    	}
-//    	minCount++; //È·¶¨·şÎñÆ÷¸öÊıÏÂÏŞ
+//    	minCount++; //ç¡®å®šæœåŠ¡å™¨ä¸ªæ•°ä¸‹é™
 		//return minCount;
 	}
 	
 	private int getOuputAbility(int i) {
 		/**
-		 * »ñÈ¡½ÚµãµÄÊä³öÄÜÁ¦
-		 * @param i ½Úµã±àºÅ
-		 * @return Êä³öÄÜÁ¦
+		 * è·å–èŠ‚ç‚¹çš„è¾“å‡ºèƒ½åŠ›
+		 * @param i èŠ‚ç‚¹ç¼–å·
+		 * @return è¾“å‡ºèƒ½åŠ›
 		 */
 		int result = 0;
 		for(Integer key: struct[i].keySet()) {
@@ -252,25 +252,25 @@ public class Graph implements Serializable{
 	
 	public List<Integer> mustServer() {
 		/**
-		 * È·¶¨¾ø¶Ô·şÎñÆ÷
-		 * ¾ø¶Ô·şÎñÆ÷µÄÇé¿ö·ÖÎªÁ½ÖÖ£º1.ÑÓÉìµÄµ¥Ö§ÖĞ´æÔÚÒ»Ìõ±ßÎŞ·¨Âú×ãĞèÇó
-		 * 					2.¶àÖ§×ÜºÍÎŞ·¨Âú×ãĞèÇó
-		 * @return ¾ø¶Ô·şÎñÆ÷ÁĞ±í
+		 * ç¡®å®šç»å¯¹æœåŠ¡å™¨
+		 * ç»å¯¹æœåŠ¡å™¨çš„æƒ…å†µåˆ†ä¸ºä¸¤ç§ï¼š1.å»¶ä¼¸çš„å•æ”¯ä¸­å­˜åœ¨ä¸€æ¡è¾¹æ— æ³•æ»¡è¶³éœ€æ±‚
+		 * 					2.å¤šæ”¯æ€»å’Œæ— æ³•æ»¡è¶³éœ€æ±‚
+		 * @return ç»å¯¹æœåŠ¡å™¨åˆ—è¡¨
 		 */
 		List<Integer> output = new ArrayList<Integer>();
 		for (int i = 0; i < consumerList.size(); i++) {
 			int vertex = consumerList.get(i).connectedVertex;
 			int demand = consumerList.get(i).demand;
-//			if(demand>100){  //´óÓÚ100µÄÖ±½Ó²¼ÖÃ·şÎñÆ÷
+//			if(demand>100){  //å¤§äº100çš„ç›´æ¥å¸ƒç½®æœåŠ¡å™¨
 //				output.add(vertex);
 //				continue;
 //			}
 			Map<Integer, Integer> link = struct[vertex];
-			if (link.size() > 2) {//¶àÖ§Çé¿ö
+			if (link.size() > 2) {//å¤šæ”¯æƒ…å†µ
 				if (getOuputAbility(vertex) - demand < demand) {
 					output.add(vertex);
 				}
-			} else if (link.size() == 2) {//µ¥Ö§Çé¿ö
+			} else if (link.size() == 2) {//å•æ”¯æƒ…å†µ
 				int linkedVertex = 0;
 				for (Integer key : link.keySet()) {
 					int temp = link.get(key);
@@ -317,8 +317,8 @@ public class Graph implements Serializable{
 	
 	public Graph myclone() {
 		/**
-		 * Ê¹ÓÃĞòÁĞ»¯µÄ·½·¨½øĞĞÉî¸´ÖÆ£¬Éî¸´ÖÆ¶ÔÏóµÄ³ÉÔ±±ØĞëÊµÏÖSerializable½Ó¿Ú
-		 * @return ·µ»Ø¸±±¾
+		 * ä½¿ç”¨åºåˆ—åŒ–çš„æ–¹æ³•è¿›è¡Œæ·±å¤åˆ¶ï¼Œæ·±å¤åˆ¶å¯¹è±¡çš„æˆå‘˜å¿…é¡»å®ç°Serializableæ¥å£
+		 * @return è¿”å›å‰¯æœ¬
 		 */
 		Graph graph = null;
 		try {

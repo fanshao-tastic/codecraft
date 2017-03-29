@@ -18,14 +18,14 @@ import java.util.Vector;
 
 public class FirstDeploy implements Serializable {
 	/**
-	 * ÄãĞèÒªÍê³ÉµÄÈë¿Ú <¹¦ÄÜÏêÏ¸ÃèÊö>
+	 * ä½ éœ€è¦å®Œæˆçš„å…¥å£ <åŠŸèƒ½è¯¦ç»†æè¿°>
 	 * 
 	 * @param graphContent
-	 *            ÓÃÀıĞÅÏ¢ÎÄ¼ş
-	 * @return [²ÎÊıËµÃ÷] Êä³ö½á¹ûĞÅÏ¢
-	 * @see [Àà¡¢Àà#·½·¨¡¢Àà#³ÉÔ±]
+	 *            ç”¨ä¾‹ä¿¡æ¯æ–‡ä»¶
+	 * @return [å‚æ•°è¯´æ˜] è¾“å‡ºç»“æœä¿¡æ¯
+	 * @see [ç±»ã€ç±»#æ–¹æ³•ã€ç±»#æˆå‘˜]
 	 */
-	private static int INFINITY = 9999; // ¾²Ì¬±äÁ¿,ÓÃÓÚ±íÊ¾ÎŞÇî
+	private static int INFINITY = 9999; // é™æ€å˜é‡,ç”¨äºè¡¨ç¤ºæ— ç©·
 	private static int serverCost;
 	private static int[][] haveGone;
 
@@ -33,27 +33,27 @@ public class FirstDeploy implements Serializable {
 		/** do your work here **/
 
 		String[] num = graphContent[0].split(" ");
-		int netVertexNum = Integer.parseInt(num[0]); // ÍøÂç½ÚµãÊıÄ¿
-		int edgeNum = Integer.parseInt(num[1]); // Á´Â·ÊıÄ¿
-		int consumerVertexNum = Integer.parseInt(num[2]); // Ïû·Ñ½ÚµãÊıÄ¿
-		haveGone = new int[netVertexNum][netVertexNum];// ¾²Ì¬Êı×éÓÃÓÚ¼ÇÂ¼Á½Á½Ö®¼äÊÇ·ñÒÑ¾­³¢ÊÔ¹ıºÏ²¢
-		serverCost = Integer.parseInt(graphContent[2]); // ·şÎñÆ÷¼Û¸ñ
+		int netVertexNum = Integer.parseInt(num[0]); // ç½‘ç»œèŠ‚ç‚¹æ•°ç›®
+		int edgeNum = Integer.parseInt(num[1]); // é“¾è·¯æ•°ç›®
+		int consumerVertexNum = Integer.parseInt(num[2]); // æ¶ˆè´¹èŠ‚ç‚¹æ•°ç›®
+		haveGone = new int[netVertexNum][netVertexNum];// é™æ€æ•°ç»„ç”¨äºè®°å½•ä¸¤ä¸¤ä¹‹é—´æ˜¯å¦å·²ç»å°è¯•è¿‡åˆå¹¶
+		serverCost = Integer.parseInt(graphContent[2]); // æœåŠ¡å™¨ä»·æ ¼
 
-		FirstEdge[] edgeList = new FirstEdge[edgeNum]; // EdgeÊı×é
+		FirstEdge[] edgeList = new FirstEdge[edgeNum]; // Edgeæ•°ç»„
 		for (int i = 0; i < edgeNum; i++) {
-			edgeList[i] = new FirstEdge(i, graphContent[4 + i]); // ´æ´¢Á´Â·ĞÅÏ¢
+			edgeList[i] = new FirstEdge(i, graphContent[4 + i]); // å­˜å‚¨é“¾è·¯ä¿¡æ¯
 		}
 
-		ConsumerVertex[] consumerVertexList = new ConsumerVertex[consumerVertexNum]; // Ïû·Ñ½ÚµãÊı×é
+		ConsumerVertex[] consumerVertexList = new ConsumerVertex[consumerVertexNum]; // æ¶ˆè´¹èŠ‚ç‚¹æ•°ç»„
 		for (int i = 0; i < consumerVertexNum; i++) {
-			consumerVertexList[i] = new ConsumerVertex(graphContent[5 + edgeNum + i]); // ´æ´¢Ïû·Ñ½ÚµãĞÅÏ¢
+			consumerVertexList[i] = new ConsumerVertex(graphContent[5 + edgeNum + i]); // å­˜å‚¨æ¶ˆè´¹èŠ‚ç‚¹ä¿¡æ¯
 		}
 			
 		Set<Integer> connected = new HashSet<Integer>();
 		for (int i = 0; i < consumerVertexList.length; i++) {
 			connected.add(consumerVertexList[i].connectedVertex);
 		}
-		FirstGraph firstgraph = new FirstGraph(netVertexNum, edgeList, connected); // ½«Í¼×ª»¯ÎªÁÚ½Ó±íµÄ½á¹¹
+		FirstGraph firstgraph = new FirstGraph(netVertexNum, edgeList, connected); // å°†å›¾è½¬åŒ–ä¸ºé‚»æ¥è¡¨çš„ç»“æ„
 		
 //		Map<Integer,Integer> Dcount=new LinkedHashMap<Integer,Integer>();		
 //	    for(int i=0;i<consumerVertexList.length-1;i++){
@@ -84,96 +84,101 @@ public class FirstDeploy implements Serializable {
 //		System.out.println("num:"+Dcount.size());
 		
 		
-		List<ServiceVertex> serviceVertexsList = new ArrayList<>();// ·şÎñÆ÷½ÚµãÁ´±í
-		List<ServiceVertex> mayServiceVertexsList = new ArrayList<>();// ¿ÉÄÜÊÇ·şÎñÆ÷µãµÄÁ´±í£¬Í¨¹ıµİ¹éµÃµ½×îºóµÄ·şÎñÆ÷½Úµã
+		List<ServiceVertex> serviceVertexsList = new ArrayList<>();// æœåŠ¡å™¨èŠ‚ç‚¹é“¾è¡¨
+		List<ServiceVertex> mayServiceVertexsList = new ArrayList<>();// å¯èƒ½æ˜¯æœåŠ¡å™¨ç‚¹çš„é“¾è¡¨ï¼Œé€šè¿‡é€’å½’å¾—åˆ°æœ€åçš„æœåŠ¡å™¨èŠ‚ç‚¹
 		List<ServiceVertex> sPServiceVertexsList = new ArrayList<>();
-		// ±éÀúÍ¼µÄarrayÊı×é£¬ÅĞ¶ÏÊÇ·ñ´æÔÚÕı·½ĞÎ
-		List<Integer> deleteList = new ArrayList<>();
-		for (int i = 0; i < firstgraph.array.length - 4; i++) {
-			int size = 0;
-			int start = -1;
-			for (int j = i + 1; j < firstgraph.array[i].length; j++) {
-				if (firstgraph.array[i][j] == 1) {
-					if (start == -1) {
-						start = j;
-					}
-					size++;
-				} else {
-					if (size <= 3) {
-						start = -1;
-						size = 0;
-					} else {
-						int count = 0;
-						for (int k = 0; k < size; k++) {
-							for (int z = i + k + 1; z < j; z++) {
-								count += firstgraph.array[i + k][z];
-							}
-						}
-						if (count == size * (size + 1) / 2) {
-							for (int k = i; k < size + i + 1; k++) {
-								if (!deleteList.contains(k)) {
-									deleteList.add(k);
-								}
-							}
-						} else {
-							start = -1;
-							size = 0;
-						}
-					}
-				}
-			}
-			if (size > 3) {
-				int count = 0;
-				for (int k = 0; k < size; k++) {
-					for (int z = i + k + 1; z < firstgraph.array[i].length; z++) {
-						count += firstgraph.array[i + k][z];
-					}
-				}
-				if (count == size * (size + 1) / 2) {
-					for (int k = i; k < size + i + 1; k++) {
-						if (!deleteList.contains(k)) {
-							deleteList.add(k);
-						}
-					}
-				} else {
-					start = -1;
-					size = 0;
-				}
-			}
-		}
-		// ×ÜĞèÇó
+		// éå†å›¾çš„arrayæ•°ç»„ï¼Œåˆ¤æ–­æ˜¯å¦å­˜åœ¨æ­£æ–¹å½¢
+//		List<Integer> deleteList = new ArrayList<>();
+//		for (int i = 0; i < firstgraph.array.length - 4; i++) {
+//			int size = 0;
+//			int start = -1;
+//			for (int j = i + 1; j < firstgraph.array[i].length; j++) {
+//				if (firstgraph.array[i][j] == 1) {
+//					if (start == -1) {
+//						start = j;
+//					}
+//					size++;
+//				} else {
+//					if (size <= 3) {
+//						start = -1;
+//						size = 0;
+//					} else {
+//						int count = 0;
+//						for (int k = 0; k < size; k++) {
+//							for (int z = i + k + 1; z < j; z++) {
+//								count += firstgraph.array[i + k][z];
+//							}
+//						}
+//						if (count == size * (size + 1) / 2) {
+//							for (int k = i; k < size + i + 1; k++) {
+//								if (!deleteList.contains(k)) {
+//									deleteList.add(k);
+//								}
+//							}
+//						} else {
+//							start = -1;
+//							size = 0;
+//						}
+//					}
+//				}
+//			}
+//			if (size > 3) {
+//				int count = 0;
+//				for (int k = 0; k < size; k++) {
+//					for (int z = i + k + 1; z < firstgraph.array[i].length; z++) {
+//						count += firstgraph.array[i + k][z];
+//					}
+//				}
+//				if (count == size * (size + 1) / 2) {
+//					for (int k = i; k < size + i + 1; k++) {
+//						if (!deleteList.contains(k)) {
+//							deleteList.add(k);
+//						}
+//					}
+//				} else {
+//					start = -1;
+//					size = 0;
+//				}
+//			}
+//		}
+//		for(Integer i:deleteList){
+//			System.out.print(i+" ");
+//		}
+//		System.out.println();
+		// æ€»éœ€æ±‚
 //		int ALL_DEMAND = 0;
 //		for (int i = 0; i < consumerVertexList.length; i++) {
 //			ALL_DEMAND += consumerVertexList[i].demand;
 //		}
 
-		// ±éÀúÏû·Ñ½Úµã£¬
+		// éå†æ¶ˆè´¹èŠ‚ç‚¹ï¼Œ
 		for (int i = 0; i < consumerVertexList.length; i++) {
 			/*
-			 * ÅĞ¶Ï¸ÃÏû·Ñ½ÚµãÁ¬½ÓµÄÊÇ·ñÎªµ¥Ò»Â·¾¶¡£ Èç¹ûÊÇµ¥Ò»Â·¾¶£¬ÇÒ¸ÃÂ·¾¶×îĞ¡ÖµĞ¡ÓÚĞèÇó£¬
-			 * ÔòÔÚÓëÏû·Ñ½ÚµãÏàÁ¬µÄÍøÂç½ÚµãÖ±½Ó²¿Êğ·şÎñÆ÷£¬²¢ÇÒÉ¾³ıÕûÌõµ¥Ò»Â·¾¶¡£
-			 * Èç¹ûÏû·Ñ½ÚµãËùÁ¬½ÓµÄÍøÂç½Úµã²»ÊÇµ¥Ò»Â·¾¶£¬µ«ÊÇÆäÄÜ½ÓÊÜµÄ×î´óÊäÈë´ø¿íĞ¡ÓÚĞèÇóÖµ£¬ ÔòÒ²½«¸ÃÍøÂç½ÚµãÉèÖÃÎª·şÎñÆ÷½Úµã¡£
+			 * åˆ¤æ–­è¯¥æ¶ˆè´¹èŠ‚ç‚¹è¿æ¥çš„æ˜¯å¦ä¸ºå•ä¸€è·¯å¾„ã€‚ å¦‚æœæ˜¯å•ä¸€è·¯å¾„ï¼Œä¸”è¯¥è·¯å¾„æœ€å°å€¼å°äºéœ€æ±‚ï¼Œ
+			 * åˆ™åœ¨ä¸æ¶ˆè´¹èŠ‚ç‚¹ç›¸è¿çš„ç½‘ç»œèŠ‚ç‚¹ç›´æ¥éƒ¨ç½²æœåŠ¡å™¨ï¼Œå¹¶ä¸”åˆ é™¤æ•´æ¡å•ä¸€è·¯å¾„ã€‚
+			 * å¦‚æœæ¶ˆè´¹èŠ‚ç‚¹æ‰€è¿æ¥çš„ç½‘ç»œèŠ‚ç‚¹ä¸æ˜¯å•ä¸€è·¯å¾„ï¼Œä½†æ˜¯å…¶èƒ½æ¥å—çš„æœ€å¤§è¾“å…¥å¸¦å®½å°äºéœ€æ±‚å€¼ï¼Œ åˆ™ä¹Ÿå°†è¯¥ç½‘ç»œèŠ‚ç‚¹è®¾ç½®ä¸ºæœåŠ¡å™¨èŠ‚ç‚¹ã€‚
 			 * 
 			 */
 			int minBand = 9999;
 			boolean first = true;
 			int pre = -1;
 			int vertexNum = consumerVertexList[i].connectedVertex;
-			// Ê×Ñ¡ÔÚÓëÏû·Ñ½ÚµãÏàÁ¬µÄÍøÂç½ÚµãÉÏ²¿Êğ·şÎñÆ÷
+			// é¦–é€‰åœ¨ä¸æ¶ˆè´¹èŠ‚ç‚¹ç›¸è¿çš„ç½‘ç»œèŠ‚ç‚¹ä¸Šéƒ¨ç½²æœåŠ¡å™¨
 			ServiceVertex serviceVertex = new ServiceVertex(firstgraph, vertexNum, consumerVertexList[i].demand);
 			/*
-			 * Ïû·Ñ½ÚµãµÄĞèÇó´óÓÚ100µÄÊ±ºòÖ±½Ó²¼ÖÃ·şÎñÆ÷
+			 * æ¶ˆè´¹èŠ‚ç‚¹çš„éœ€æ±‚å¤§äº100çš„æ—¶å€™ç›´æ¥å¸ƒç½®æœåŠ¡å™¨
 			 */
-			if (consumerVertexList[i].demand >= 100) {
+			if (consumerVertexList[i].demand >= 95 || firstgraph.struct[vertexNum].size()>6) {
+			//if (consumerVertexList[i].demand >= 95) {	
 				System.out.println("------------" + vertexNum);
 				// sPServiceVertexsList.add(serviceVertex);
 				serviceVertexsList.add(serviceVertex);
 				continue;
 			}
-			// ÅĞ¶ÏÊÇ·ñÎªµ¥ÌõÂ·¾¶¡£Èç¹ûÊÇfirstµã£¬ËüµÄ±ßµÄÊıÄ¿Îª1.Èç¹û²»ÊÇfirstµã£¬ÔòÓ¦¸ÃÎª2(Ò²ÓĞ¿ÉÄÜÊÇ3£¬4£¬5.¡£).
+			// åˆ¤æ–­æ˜¯å¦ä¸ºå•æ¡è·¯å¾„ã€‚å¦‚æœæ˜¯firstç‚¹ï¼Œå®ƒçš„è¾¹çš„æ•°ç›®ä¸º1.å¦‚æœä¸æ˜¯firstç‚¹ï¼Œåˆ™åº”è¯¥ä¸º2(ä¹Ÿæœ‰å¯èƒ½æ˜¯3ï¼Œ4ï¼Œ5.ã€‚).
 			while (((firstgraph.struct[vertexNum].size() == 1) && (first))
 					|| ((firstgraph.struct[vertexNum].size() == 2) && (!first))) {
-				// Èç¹ûÕâÌõÂ·¾¶µÄÊ£Óà´ø¿íĞ¡ÓÚÂ·¾¶ÏÖÓĞ×îĞ¡´ø¿í£¬Ôò¸Ä±äÂ·¾¶×îĞ¡´ø¿í
+				// å¦‚æœè¿™æ¡è·¯å¾„çš„å‰©ä½™å¸¦å®½å°äºè·¯å¾„ç°æœ‰æœ€å°å¸¦å®½ï¼Œåˆ™æ”¹å˜è·¯å¾„æœ€å°å¸¦å®½
 
 				if (first) {
 					first = false;
@@ -182,7 +187,7 @@ public class FirstDeploy implements Serializable {
 						minBand = getEdge(firstgraph, firstgraph.struct[vertexNum].get(0)[1]).maxBand;
 					}
 					pre = vertexNum;
-					vertexNum = firstgraph.struct[vertexNum].get(0)[0];// ½«¶¥µãºÅ´«µİ¸ø±ßµÄÁíÒ»¸ö¶¥µã¼ÌĞøÅĞ¶ÏÊÇ·ñ»¹ÊÇµ¥ÌõÂ·¾¶
+					vertexNum = firstgraph.struct[vertexNum].get(0)[0];// å°†é¡¶ç‚¹å·ä¼ é€’ç»™è¾¹çš„å¦ä¸€ä¸ªé¡¶ç‚¹ç»§ç»­åˆ¤æ–­æ˜¯å¦è¿˜æ˜¯å•æ¡è·¯å¾„
 				} else {
 					for (int j = 0; j < firstgraph.struct[vertexNum].size(); j++) {
 						if (firstgraph.struct[vertexNum].get(j)[0] != pre) {
@@ -197,20 +202,20 @@ public class FirstDeploy implements Serializable {
 					}
 				}
 			}
-			// Èç¹ûµ¥Ò»Â·¾¶×îĞ¡´ø¿íĞ¡ÓÚÏû·ÑµãĞèÇó£¬ÔòÖ±½Ó½«ÓëÏû·Ñ½ÚµãÏàÁ¬µÄ·şÎñÆ÷¼ÓÈëµ½È·¶¨·şÎñÆ÷¼¯ºÏÖĞ¡£
-			// ²¢É¾³ıÕâÌõÂ·¾¶
+			// å¦‚æœå•ä¸€è·¯å¾„æœ€å°å¸¦å®½å°äºæ¶ˆè´¹ç‚¹éœ€æ±‚ï¼Œåˆ™ç›´æ¥å°†ä¸æ¶ˆè´¹èŠ‚ç‚¹ç›¸è¿çš„æœåŠ¡å™¨åŠ å…¥åˆ°ç¡®å®šæœåŠ¡å™¨é›†åˆä¸­ã€‚
+			// å¹¶åˆ é™¤è¿™æ¡è·¯å¾„
 			if (minBand < consumerVertexList[i].demand) {
 				// System.out.println("1111111111" + serviceVertex.location);
 				// System.out.println(pre);
 				serviceVertexsList.add(serviceVertex);
 			}
-			// Èç¹ûÓëÏû·Ñ½ÚµãÏàÁ¬µÄÍøÂç½ÚµãÓĞ¶àÌõÂ·¾¶£¬µ«ÊÇÂ·¾¶´ø¿í×ÜºÍÎŞ·¨´ïµ½Ïû·ÑµãĞèÇó
-			// ÔòÖ±½Ó½«ÓëÏû·Ñ½ÚµãÏàÁ¬µÄ·şÎñÆ÷¼ÓÈëµ½È·¶¨·şÎñÆ÷¼¯ºÏÖĞ¡£
+			// å¦‚æœä¸æ¶ˆè´¹èŠ‚ç‚¹ç›¸è¿çš„ç½‘ç»œèŠ‚ç‚¹æœ‰å¤šæ¡è·¯å¾„ï¼Œä½†æ˜¯è·¯å¾„å¸¦å®½æ€»å’Œæ— æ³•è¾¾åˆ°æ¶ˆè´¹ç‚¹éœ€æ±‚
+			// åˆ™ç›´æ¥å°†ä¸æ¶ˆè´¹èŠ‚ç‚¹ç›¸è¿çš„æœåŠ¡å™¨åŠ å…¥åˆ°ç¡®å®šæœåŠ¡å™¨é›†åˆä¸­ã€‚
 			else if (computeVertexInBand(firstgraph, vertexNum, pre) < consumerVertexList[i].demand) {
 				serviceVertexsList.add(serviceVertex);
 			}
-			// Èç¹ûÉÏÁ½¸öÌõ¼ş¶¼²»·ûºÏ£¬Ôò½«½¨Á¢ÔÚÓëÏû·Ñ½ÚµãÏàÁ¬µÄÍøÂç½ÚµãÉÏµÄ·şÎñÆ÷¼ÓÈëºòÑ¡·şÎñÆ÷¶Ó
-			// ÁĞ½øĞĞÏÂÒ»ÂÖÉ¸Ñ¡
+			// å¦‚æœä¸Šä¸¤ä¸ªæ¡ä»¶éƒ½ä¸ç¬¦åˆï¼Œåˆ™å°†å»ºç«‹åœ¨ä¸æ¶ˆè´¹èŠ‚ç‚¹ç›¸è¿çš„ç½‘ç»œèŠ‚ç‚¹ä¸Šçš„æœåŠ¡å™¨åŠ å…¥å€™é€‰æœåŠ¡å™¨é˜Ÿ
+			// åˆ—è¿›è¡Œä¸‹ä¸€è½®ç­›é€‰
 			else {
 				mayServiceVertexsList.add(serviceVertex);
 			}
@@ -226,17 +231,17 @@ public class FirstDeploy implements Serializable {
 			System.out.println(serviceVertex.location);
 		}
 		System.out.println("-----------------------------------");
-		// ÔÚ½øĞĞºÏ²¢Ç°ÏÈ¶ÔgraphºÍÁ½¸ölist½øĞĞÉî¸´ÖÆ
+		// åœ¨è¿›è¡Œåˆå¹¶å‰å…ˆå¯¹graphå’Œä¸¤ä¸ªlistè¿›è¡Œæ·±å¤åˆ¶
 		FirstGraph graph2 = firstgraph.deepClone(firstgraph);
 		List<ServiceVertex> mayServiceVertexsList2 = new ArrayList<ServiceVertex>(mayServiceVertexsList);
 		List<ServiceVertex> serviceVertexsList2 = new ArrayList<ServiceVertex>(serviceVertexsList);
 
-		System.out.println("-----------------------------------");
-		for (int i = 0; i < firstgraph.weights.length; i++) {
-			System.out.println(i + ":" + firstgraph.weights[i]);
-		}
-
-		System.out.println("-----------------------------------");
+//		System.out.println("-----------------------------------");
+//		for (int i = 0; i < firstgraph.weights.length; i++) {
+//			System.out.println(i + ":" + firstgraph.weights[i]);
+//		}
+//
+//		System.out.println("-----------------------------------");
 
 		int time = 4;
 		while (time > 0) {
@@ -244,12 +249,12 @@ public class FirstDeploy implements Serializable {
 			int count =0;
 			while (true) {
 				int result = combineService(firstgraph, mayServiceVertexsList, serviceVertexsList);
-				if(count>5){//Ê§°ÜÁ¬Ğø³¬¹ı100´ÎÔòÍË³öÀ´¡£
+				if(count>5){//å¤±è´¥è¿ç»­è¶…è¿‡100æ¬¡åˆ™é€€å‡ºæ¥ã€‚
 					break;
 				}
 				
 				if (result == 1) {
-					System.out.println("ºÏ²¢³É¹¦");
+					//System.out.println("åˆå¹¶æˆåŠŸ");
 					//count--;
 					graph2 = firstgraph.deepClone(firstgraph);
 					mayServiceVertexsList2 = new ArrayList<ServiceVertex>(mayServiceVertexsList);
@@ -264,7 +269,7 @@ public class FirstDeploy implements Serializable {
 
 				if (result == 2) {
 					count++;
-					System.out.println("ºÏ²¢Ê§°Ü·µ»Ø2");
+					System.out.println("åˆå¹¶å¤±è´¥è¿”å›2");
 					firstgraph = graph2.deepClone(graph2);
 					edgeList = firstgraph.edgeList;
 					mayServiceVertexsList = new ArrayList<>(mayServiceVertexsList2);
@@ -277,7 +282,7 @@ public class FirstDeploy implements Serializable {
 
 				if (result == 3) {
 					count++;
-					System.out.println("ºÏ²¢Ê§°Ü·µ»Ø3");
+					System.out.println("åˆå¹¶å¤±è´¥è¿”å›3");
 //					for (ServiceVertex serviceVertex2 : mayServiceVertexsList) {
 //						System.out.print(serviceVertex2.location + ":" + serviceVertex2.demand + " , ");
 //					}
@@ -302,14 +307,14 @@ public class FirstDeploy implements Serializable {
 		 * mayServiceVertexsList , serviceVertexsList); }
 		 * System.out.println("-----------------------------------");
 		 */
-		int sum = 0;
-		for (FirstEdge edge : edgeList) {
-			sum += Math.abs(edge.usedBand) * edge.price;
-			// System.out.println(
-			// edge.id + "ºÅ±ß £¬ ÆğµãÎª" + edge.startPoint + "£¬ÖÕµãÎª " + edge.endPoint
-			// + "£¬Ê¹ÓÃ´ø¿íÎª" + edge.usedBand);
-		}
-		System.out.println(sum);
+//		int sum = 0;
+//		for (FirstEdge edge : edgeList) {
+//			sum += Math.abs(edge.usedBand) * edge.price;
+//			// System.out.println(
+//			// edge.id + "å·è¾¹ ï¼Œ èµ·ç‚¹ä¸º" + edge.startPoint + "ï¼Œç»ˆç‚¹ä¸º " + edge.endPoint
+//			// + "ï¼Œä½¿ç”¨å¸¦å®½ä¸º" + edge.usedBand);
+//		}
+//		System.out.println(sum);
 
 		System.out.println("-----------------------------------");
 		// System.out.println(computeVertexBand(graph, 1));
@@ -320,19 +325,22 @@ public class FirstDeploy implements Serializable {
 		int count = 0;
 		int count2 = 0;	
 		List<Map<Integer,Integer>> returnOut= new ArrayList<Map<Integer,Integer>>();
-		Map<Integer,Integer> serMap1=new LinkedHashMap<Integer,Integer>();  //¿ÉÄÜ
-		Map<Integer,Integer> serMap2=new LinkedHashMap<Integer,Integer>(); //Ò»¶¨ÊÇ·şÎñÆ÷
+		Map<Integer,Integer> serMap1=new LinkedHashMap<Integer,Integer>();  //å¯èƒ½
+		Map<Integer,Integer> serMap2=new LinkedHashMap<Integer,Integer>(); //ä¸€å®šæ˜¯æœåŠ¡å™¨
 		for (ServiceVertex serviceVertex : mayServiceVertexsList) {
 			count += serviceVertex.demand;
 			serMap1.put(serviceVertex.location, serviceVertex.demand);
+			System.out.print(serviceVertex.location+":"+serviceVertex.demand+" ,");
 		}
 		for (ServiceVertex serviceVertex : sPServiceVertexsList) {
 			count += serviceVertex.demand;
 			serMap2.put(serviceVertex.location, serviceVertex.demand);
+			System.out.print(serviceVertex.location+":"+serviceVertex.demand+" ,");
 		}
 		for (ServiceVertex serviceVertex : serviceVertexsList) {
 			count += serviceVertex.demand;
 			serMap2.put(serviceVertex.location, serviceVertex.demand);
+			System.out.print(serviceVertex.location+":"+serviceVertex.demand+" ,");
 		}
 		for (ConsumerVertex cv : consumerVertexList) {
 			count2 += cv.demand;
@@ -383,25 +391,25 @@ public class FirstDeploy implements Serializable {
 	public static int combineService(FirstGraph graph, List<ServiceVertex> mayServiceVertexsList,
 			List<ServiceVertex> serviceVertexsList) {
 		/*
-		 * Õâ¸ö·½·¨Ó¦¸Ã·µ»ØÖµÎªint×÷Îª½á¹û×´Ì¬Âë 1£ººÏ²¢³É¹¦ 2£ººÏ²¢Ê§°Ü£¬²¢ÇÒ¹ı³ÌÖĞ¸üĞÂÁËÒ»Ğ©ĞÅÏ¢¡£·µ»ØÖ®ºóĞèÒª½«²ÎÊı»¹Ô­ÎªĞòÁĞ»¯Ëù±£´æµÄ²ÎÊı
-		 * 3£ººÏ²¢Ê§°Ü£¬µ«ÊÇ²¢Ã»ÓĞ¸üĞÂÈÎºÎĞÅÏ¢¡£ 4: ËùÓĞ±¸Ñ¡·şÎñÆ÷Ö®¼ä¶¼ÒÑ¾­Íê³ÉÁËÁ½Á½ºÏ²¢
+		 * è¿™ä¸ªæ–¹æ³•åº”è¯¥è¿”å›å€¼ä¸ºintä½œä¸ºç»“æœçŠ¶æ€ç  1ï¼šåˆå¹¶æˆåŠŸ 2ï¼šåˆå¹¶å¤±è´¥ï¼Œå¹¶ä¸”è¿‡ç¨‹ä¸­æ›´æ–°äº†ä¸€äº›ä¿¡æ¯ã€‚è¿”å›ä¹‹åéœ€è¦å°†å‚æ•°è¿˜åŸä¸ºåºåˆ—åŒ–æ‰€ä¿å­˜çš„å‚æ•°
+		 * 3ï¼šåˆå¹¶å¤±è´¥ï¼Œä½†æ˜¯å¹¶æ²¡æœ‰æ›´æ–°ä»»ä½•ä¿¡æ¯ã€‚ 4: æ‰€æœ‰å¤‡é€‰æœåŠ¡å™¨ä¹‹é—´éƒ½å·²ç»å®Œæˆäº†ä¸¤ä¸¤åˆå¹¶
 		 *
-		 * Á½Á½ºÏ²¢·şÎñÆ÷ ¶Ô±¸Ñ¡·şÎñÆ÷ÁĞ±íÖĞµÄ·şÎñÆ÷Ê¹ÓÃ×î¶ÌÂ·¾¶Ëã·¨£¬Ñ¡Ôñ¾àÀë×î¶ÌµÄ·şÎñÆ÷Á½Á½ºÏ²¢
-		 * Èç¹ûÒ»Ì×Â·¾¶ÔÚ±È¶ÔÊ±¶ÌÓëµ±Ç°×î¶ÌÂ·¾¶£¬µ«ÆäÂ·¾¶ÉÏµÄÁ´Â·»¨·Ñ´óÓÚÒ»Ì¨·şÎñÆ÷µÄ³É±¾£¬ Ôò·ÅÆú¸ÃÂ·¾¶£¬µ±Ç°×î¶ÌÂ·¾¶±£³Ö²»±ä
-		 * ĞÂµÄ·şÎñÆ÷Ñ¡ÔÚÁ½µãÖ®¼äÊä³öÄÜÁ¦×î´óµÄÍøÂç½ÚµãÉÏ,ÇÒ¸Ã½ÚµãµÄ×î´óÊä³öÄÜÁ¦Ó¦¸Ã´óÓÚÔ­ÏÈÁ½¸ö·şÎñÆ÷µÄĞèÇóÖ®ºÍ
-		 * ºÏ²¢·şÎñÆ÷Ö®ºó£¬´Ó±¸Ñ¡·şÎñÆ÷ÁĞ±íÖĞÉ¾³ıºÏ²¢µÄÁ½Ì¨·şÎñÆ÷¡£¼ÓÈëºÏ²¢µÄĞÂ·şÎñÆ÷ ¸üĞÂÍ¼ÖĞ±ßµÄÊ£Óà´ø¿í£¨×¢ÒâÒª·ÖÉÏÏÂĞĞ£©
-		 * Íê³ÉÖ®ºó£¬·µ»Øtrue±íÊ¾ÕÒµ½»¹ÄÜÕÒµ½×îĞ¡Â·¾¶²¢ÇÒÍ¼¸üĞÂÍê±Ï Èç¹ûÎŞ·¨ÕÒµ½×îĞ¡Â·¾¶£¬Ôò·µ»Øfalse
+		 * ä¸¤ä¸¤åˆå¹¶æœåŠ¡å™¨ å¯¹å¤‡é€‰æœåŠ¡å™¨åˆ—è¡¨ä¸­çš„æœåŠ¡å™¨ä½¿ç”¨æœ€çŸ­è·¯å¾„ç®—æ³•ï¼Œé€‰æ‹©è·ç¦»æœ€çŸ­çš„æœåŠ¡å™¨ä¸¤ä¸¤åˆå¹¶
+		 * å¦‚æœä¸€å¥—è·¯å¾„åœ¨æ¯”å¯¹æ—¶çŸ­ä¸å½“å‰æœ€çŸ­è·¯å¾„ï¼Œä½†å…¶è·¯å¾„ä¸Šçš„é“¾è·¯èŠ±è´¹å¤§äºä¸€å°æœåŠ¡å™¨çš„æˆæœ¬ï¼Œ åˆ™æ”¾å¼ƒè¯¥è·¯å¾„ï¼Œå½“å‰æœ€çŸ­è·¯å¾„ä¿æŒä¸å˜
+		 * æ–°çš„æœåŠ¡å™¨é€‰åœ¨ä¸¤ç‚¹ä¹‹é—´è¾“å‡ºèƒ½åŠ›æœ€å¤§çš„ç½‘ç»œèŠ‚ç‚¹ä¸Š,ä¸”è¯¥èŠ‚ç‚¹çš„æœ€å¤§è¾“å‡ºèƒ½åŠ›åº”è¯¥å¤§äºåŸå…ˆä¸¤ä¸ªæœåŠ¡å™¨çš„éœ€æ±‚ä¹‹å’Œ
+		 * åˆå¹¶æœåŠ¡å™¨ä¹‹åï¼Œä»å¤‡é€‰æœåŠ¡å™¨åˆ—è¡¨ä¸­åˆ é™¤åˆå¹¶çš„ä¸¤å°æœåŠ¡å™¨ã€‚åŠ å…¥åˆå¹¶çš„æ–°æœåŠ¡å™¨ æ›´æ–°å›¾ä¸­è¾¹çš„å‰©ä½™å¸¦å®½ï¼ˆæ³¨æ„è¦åˆ†ä¸Šä¸‹è¡Œï¼‰
+		 * å®Œæˆä¹‹åï¼Œè¿”å›trueè¡¨ç¤ºæ‰¾åˆ°è¿˜èƒ½æ‰¾åˆ°æœ€å°è·¯å¾„å¹¶ä¸”å›¾æ›´æ–°å®Œæ¯• å¦‚æœæ— æ³•æ‰¾åˆ°æœ€å°è·¯å¾„ï¼Œåˆ™è¿”å›false
 		 *
-		 * @param graph Í¼
+		 * @param graph å›¾
 		 * 
-		 * @param mayServiceVertexsList ´ıÑ¡·şÎñÆ÷¼¯ºÏ
+		 * @param mayServiceVertexsList å¾…é€‰æœåŠ¡å™¨é›†åˆ
 		 * 
-		 * @param serviceVertexsList È·¶¨·şÎñÆ÷¼¯ºÏ
+		 * @param serviceVertexsList ç¡®å®šæœåŠ¡å™¨é›†åˆ
 		 * 
 		 */
 		sort(mayServiceVertexsList);
 		int result = 0;
-		// ĞÂ½¨Ò»¸ö¼¯ºÏÓÃÓÚ´æ´¢×îĞ¡Â·¾¶¡£¸ø¼¯ºÏÌí¼Ó30¸ö0×÷Îª³õÊ¼Öµ·½±ã±È½Ï
+		// æ–°å»ºä¸€ä¸ªé›†åˆç”¨äºå­˜å‚¨æœ€å°è·¯å¾„ã€‚ç»™é›†åˆæ·»åŠ 30ä¸ª0ä½œä¸ºåˆå§‹å€¼æ–¹ä¾¿æ¯”è¾ƒ
 		List<Integer> shortestPath = new ArrayList<Integer>();
 		int shortestPathCost = 9999;
 		ServiceVertex startServiceVertex = null;
@@ -409,7 +417,7 @@ public class FirstDeploy implements Serializable {
 		for (int i = 0; i < 50; i++) {
 			shortestPath.add(0);
 		}
-		// Ê¹±¸Ñ¡·şÎñÆ÷ÁĞ±íÖĞµÄµãÁ½Á½Ñ°ÕÒ×îĞ¡Â·¾¶
+		// ä½¿å¤‡é€‰æœåŠ¡å™¨åˆ—è¡¨ä¸­çš„ç‚¹ä¸¤ä¸¤å¯»æ‰¾æœ€å°è·¯å¾„
 		for (int i = 1; i < mayServiceVertexsList.size(); i++) {
 
 			if ((dijkstra(graph, mayServiceVertexsList.get(0).location, mayServiceVertexsList.get(i).location) != null
@@ -426,22 +434,22 @@ public class FirstDeploy implements Serializable {
 			}
 		}
 
-		// Èç¹ûÁ½Á½Ö®¼ä¶¼ÎŞ·¨ÕÒµ½Â·¾¶£¬ÔòºÏ²¢½áÊø¡£·µ»ØÖµÎª4
+		// å¦‚æœä¸¤ä¸¤ä¹‹é—´éƒ½æ— æ³•æ‰¾åˆ°è·¯å¾„ï¼Œåˆ™åˆå¹¶ç»“æŸã€‚è¿”å›å€¼ä¸º4
 		if (startServiceVertex == null) {
 			return 4;
 		}
-		// È·¶¨ÒªºÏ²¢ÄÄÁ½Ì¨·şÎñÆ÷Ö®ºóÏÈÔÚhaveGoneÊı×éÖĞ¼ÇÂ¼¡£ÒòÎª²»¹ÜºÏ²¢³É¹¦»¹ÊÇÊ§°Ü¶¼¿ÉÒÔ±»¼ÇÂ¼
+		// ç¡®å®šè¦åˆå¹¶å“ªä¸¤å°æœåŠ¡å™¨ä¹‹åå…ˆåœ¨haveGoneæ•°ç»„ä¸­è®°å½•ã€‚å› ä¸ºä¸ç®¡åˆå¹¶æˆåŠŸè¿˜æ˜¯å¤±è´¥éƒ½å¯ä»¥è¢«è®°å½•
 //		System.out.println("****************************************" + startServiceVertex.location);
 //		System.out.println("****************************************" + endServiceVertex.location);
-		for (Integer integer : shortestPath) {
-			System.out.print(integer + "->");
-		}
+//		for (Integer integer : shortestPath) {
+//			System.out.print(integer + "->");
+//		}
 		haveGone[startServiceVertex.location][endServiceVertex.location] = 1;
 
 		int maxBand = 0;
 		int maxBandId = 0;
-		// int id = 0; ÉèÖÃÒ»¸öid¼ÇÂ¼ĞÂ½¨·şÎñÆ÷µÄÎ»ÖÃ
-		// 1±éÀúÕûÌõÂ·¾¶£¬Ñ¡ÔñÊä³öÄÜÁ¦×îÇ¿µÄµã×÷ÎªĞÂµÄ·şÎñÆ÷µÄ±¸Ñ¡Î»ÖÃ
+		// int id = 0; è®¾ç½®ä¸€ä¸ªidè®°å½•æ–°å»ºæœåŠ¡å™¨çš„ä½ç½®
+		// 1éå†æ•´æ¡è·¯å¾„ï¼Œé€‰æ‹©è¾“å‡ºèƒ½åŠ›æœ€å¼ºçš„ç‚¹ä½œä¸ºæ–°çš„æœåŠ¡å™¨çš„å¤‡é€‰ä½ç½®
 		for (Integer integer : shortestPath) {
 			if (graph.weights[integer] > maxBand) {
 				maxBand = graph.weights[integer];
@@ -449,36 +457,36 @@ public class FirstDeploy implements Serializable {
 				// id = maxBandId;
 			}
 		}
-		System.out.println(maxBandId);
-		// 2¼ÆËã·ÑÓÃ
+		//System.out.println(maxBandId);
+		// 2è®¡ç®—è´¹ç”¨
 		int cost = pathCost(graph, shortestPath, maxBandId, startServiceVertex, endServiceVertex);
 
-		// 3Èç¹ûºÏ²¢Ö®ºóÁ´Â·»¨·ÑĞ¡ÓÚÒ»¸ö·şÎñÆ÷µÄ¼Û¸ñ,²¢ÇÒĞÂ·şÎñÆ÷µÄÍøÂç½ÚµãÊä³öÄÜÁ¦´óÓÚÔ­À´Á½¸ö·şÎñÆ÷µÄĞèÇóÖ®ºÍ
-		// ¸üĞÂ´ø¿í£¬ĞŞ¸Ä±¸Ñ¡·şÎñÆ÷¼¯ºÏ
-		// ¸üĞÂ´ø¿íÊ±£¬Èç¹ûÑ¡ÔñµÄ×î¶ÌÂ·¾¶ÉÏµÄ±ß²»ÄÜÂú×ãÏû·ÑĞèÇó£¬ÔòÏÈÅÜÂúÕâÌõ±ß£¬²¢ÔÚÍ¼ÖĞÉ¾³ıÕâÌõ±ß¡£
-		// ÔÙÑ°ÕÒÆäËûÓëÊäÈë²»¹»µÄÍøÂç½ÚµãÏàÁ¬µÄ½Úµã²¼ÖÃ·şÎñÆ÷£¬ÏòÕâ¸öÎ´Âú×ãĞèÇóµÄ½Úµã¼ÌĞøÊäËÍ´ø¿í
-		// ÊäÈëÄÜÁ¦Ğ¡ÓÚĞèÇóµÄ²»ÄÜ²¼ÖÃ·şÎñÆ÷£¬ÏàÁ¬±ßÈ¨ÖµĞ¡µÄÓÅÏÈÅÜÂú¡£
-
-		if (cost <= serverCost * 1.1) {
+		// 3å¦‚æœåˆå¹¶ä¹‹åé“¾è·¯èŠ±è´¹å°äºä¸€ä¸ªæœåŠ¡å™¨çš„ä»·æ ¼,å¹¶ä¸”æ–°æœåŠ¡å™¨çš„ç½‘ç»œèŠ‚ç‚¹è¾“å‡ºèƒ½åŠ›å¤§äºåŸæ¥ä¸¤ä¸ªæœåŠ¡å™¨çš„éœ€æ±‚ä¹‹å’Œ
+		// æ›´æ–°å¸¦å®½ï¼Œä¿®æ”¹å¤‡é€‰æœåŠ¡å™¨é›†åˆ
+		// æ›´æ–°å¸¦å®½æ—¶ï¼Œå¦‚æœé€‰æ‹©çš„æœ€çŸ­è·¯å¾„ä¸Šçš„è¾¹ä¸èƒ½æ»¡è¶³æ¶ˆè´¹éœ€æ±‚ï¼Œåˆ™å…ˆè·‘æ»¡è¿™æ¡è¾¹ï¼Œå¹¶åœ¨å›¾ä¸­åˆ é™¤è¿™æ¡è¾¹ã€‚
+		// å†å¯»æ‰¾å…¶ä»–ä¸è¾“å…¥ä¸å¤Ÿçš„ç½‘ç»œèŠ‚ç‚¹ç›¸è¿çš„èŠ‚ç‚¹å¸ƒç½®æœåŠ¡å™¨ï¼Œå‘è¿™ä¸ªæœªæ»¡è¶³éœ€æ±‚çš„èŠ‚ç‚¹ç»§ç»­è¾“é€å¸¦å®½
+		// è¾“å…¥èƒ½åŠ›å°äºéœ€æ±‚çš„ä¸èƒ½å¸ƒç½®æœåŠ¡å™¨ï¼Œç›¸è¿è¾¹æƒå€¼å°çš„ä¼˜å…ˆè·‘æ»¡ã€‚
+		//double rd=Math.random()>=0.5?0.2:-0.1;
+		if (cost <= serverCost * 1.1){
 			int place = -1;
-			// ¼ÆËã·şÎñÆ÷ÔÚÂ·¾¶ÖĞÊÇµÚ¼¸¸öµã
+			// è®¡ç®—æœåŠ¡å™¨åœ¨è·¯å¾„ä¸­æ˜¯ç¬¬å‡ ä¸ªç‚¹
 			for (int i = 0; i < shortestPath.size(); i++) {
 				if (maxBandId == shortestPath.get(i)) {
 					place = i;
 					break;
 				}
 			}
-			// ¼ÆËã¸ÃÌõÂ·¾¶ÉÏ×îĞ¡¸ºÔØ±ßµÄ¸ºÔØ
+			// è®¡ç®—è¯¥æ¡è·¯å¾„ä¸Šæœ€å°è´Ÿè½½è¾¹çš„è´Ÿè½½
 			int minBand = 9999;
 			int newBand = 0;
-			// Ê×Ñ¡¶ÔÆğµãµ½·şÎñÆ÷µÄ°ëÌõÂ·½øĞĞºÏ²¢
+			// é¦–é€‰å¯¹èµ·ç‚¹åˆ°æœåŠ¡å™¨çš„åŠæ¡è·¯è¿›è¡Œåˆå¹¶
 			for (int i = 0; i < place; i++) {
 				if (canGive(graph, shortestPath.get(i), shortestPath.get(i + 1)) < minBand) {
 					minBand = canGive(graph, shortestPath.get(i), shortestPath.get(i + 1));
 				}
 			}
-			if (minBand != 9999) {// Ê×Ñ¡ÅĞ¶ÏÆğµãÊÇ²»ÊÇ·şÎñÆ÷µã¡£Èç¹ûÊÇ·şÎñÆ÷µãÔò²»ĞèÒª½øĞĞÕâÒ»²½
-				// Èç¹ûÕâÌõÂ·¾¶ÄÜ¹»Âú×ãÆğµã´ø¿íĞèÇó£¬Ôò¸üĞÂÕûÌõÂ·ÉÏµÄ´ø¿í£¬²¢½«resultÉèÖÃÎª1
+			if (minBand != 9999) {// é¦–é€‰åˆ¤æ–­èµ·ç‚¹æ˜¯ä¸æ˜¯æœåŠ¡å™¨ç‚¹ã€‚å¦‚æœæ˜¯æœåŠ¡å™¨ç‚¹åˆ™ä¸éœ€è¦è¿›è¡Œè¿™ä¸€æ­¥
+				// å¦‚æœè¿™æ¡è·¯å¾„èƒ½å¤Ÿæ»¡è¶³èµ·ç‚¹å¸¦å®½éœ€æ±‚ï¼Œåˆ™æ›´æ–°æ•´æ¡è·¯ä¸Šçš„å¸¦å®½ï¼Œå¹¶å°†resultè®¾ç½®ä¸º1
 				if (minBand >= startServiceVertex.demand) {
 					newBand = startServiceVertex.demand;
 					for (int i = 0; i < place; i++) {
@@ -486,29 +494,29 @@ public class FirstDeploy implements Serializable {
 					}
 					result = 1;
 				} else {
-					// µ±ÕâÌõÂ·¾¶²»ÄÜÂú×ã´ø¿íĞèÇóÊ±£¬ÎÒÃÇÏÈÅĞ¶ÏÂ·µÄÖÕµãÄÜ·ñÂú×ãÕÒµ½µã²¹×ãÊ£ÏÂµÄ´ø¿í¡£
-					// Èç¹û¿ÉÒÔ£¬ÎÒÃÇ½«ÏÈÅÜÂúÕâÌõÂ·£¬ÔÙµ½ÖÕµã´¦Ñ°ÕÒµã²¹×ãÊ£ÓàËùĞè´ø¿í
-					// Èç¹û²»¿ÉÒÔ£¬ÔòºÏ²¢·şÎñÆ÷Ê§°Ü£¬Ö±½Ó·µ»Øresult = 2£»
+					// å½“è¿™æ¡è·¯å¾„ä¸èƒ½æ»¡è¶³å¸¦å®½éœ€æ±‚æ—¶ï¼Œæˆ‘ä»¬å…ˆåˆ¤æ–­è·¯çš„ç»ˆç‚¹èƒ½å¦æ»¡è¶³æ‰¾åˆ°ç‚¹è¡¥è¶³å‰©ä¸‹çš„å¸¦å®½ã€‚
+					// å¦‚æœå¯ä»¥ï¼Œæˆ‘ä»¬å°†å…ˆè·‘æ»¡è¿™æ¡è·¯ï¼Œå†åˆ°ç»ˆç‚¹å¤„å¯»æ‰¾ç‚¹è¡¥è¶³å‰©ä½™æ‰€éœ€å¸¦å®½
+					// å¦‚æœä¸å¯ä»¥ï¼Œåˆ™åˆå¹¶æœåŠ¡å™¨å¤±è´¥ï¼Œç›´æ¥è¿”å›result = 2ï¼›
 					newBand = minBand;
 					int stillNeed = startServiceVertex.demand - minBand;
-					// ½ØÈ¡list²¢½«ËüÄæ×ª
+					// æˆªå–listå¹¶å°†å®ƒé€†è½¬
 					List<Integer> list = shortestPath.subList(0, place + 1);
 					List<Integer> list1 = new ArrayList<>(list);
 					Collections.reverse(list1);
 					if (findOtherService(graph, list1, stillNeed, mayServiceVertexsList, serviceVertexsList)) {
-						// ¿ÉÒÔÕÒµ½µã²¹È«´ø¿íĞèÇó£¬¸üĞÂÕâÌõÂ·µÄ´ø¿í
+						// å¯ä»¥æ‰¾åˆ°ç‚¹è¡¥å…¨å¸¦å®½éœ€æ±‚ï¼Œæ›´æ–°è¿™æ¡è·¯çš„å¸¦å®½
 						for (int i = 0; i < place; i++) {
 							updataBand(graph, shortestPath.get(i), shortestPath.get(i + 1), minBand);
 						}
 						result = 1;
 					} else {
-						// ÎŞ·¨ÕÒµ½µãÀ´²¹×ã´ø¿í£¬Ö±½Ó·µ»Øresult = 2£»
+						// æ— æ³•æ‰¾åˆ°ç‚¹æ¥è¡¥è¶³å¸¦å®½ï¼Œç›´æ¥è¿”å›result = 2ï¼›
 						result = 2;
 						return result;
 					}
 				}
 			}
-			// ÏÖÔÚ¶Ôºó°ë¶ÎÂ·¾¶½øĞĞºÏ²¢
+			// ç°åœ¨å¯¹ååŠæ®µè·¯å¾„è¿›è¡Œåˆå¹¶
 			int minBand2 = 9999;
 			int newBand2 = 0;
 			for (int i = place; i < shortestPath.size() - 1; i++) {
@@ -519,7 +527,7 @@ public class FirstDeploy implements Serializable {
 				}
 			}
 			if (minBand2 != 9999) {
-				// Èç¹ûÕâÌõÂ·¾¶ÄÜ¹»Âú×ãÆğµã´ø¿íĞèÇó£¬Ôò¸üĞÂÕûÌõÂ·ÉÏµÄ´ø¿í£¬²¢½«resultÉèÖÃÎª1
+				// å¦‚æœè¿™æ¡è·¯å¾„èƒ½å¤Ÿæ»¡è¶³èµ·ç‚¹å¸¦å®½éœ€æ±‚ï¼Œåˆ™æ›´æ–°æ•´æ¡è·¯ä¸Šçš„å¸¦å®½ï¼Œå¹¶å°†resultè®¾ç½®ä¸º1
 				if (minBand2 >= endServiceVertex.demand) {
 					newBand2 = endServiceVertex.demand;
 					for (int i = place; i < shortestPath.size() - 1; i++) {
@@ -527,21 +535,21 @@ public class FirstDeploy implements Serializable {
 					}
 					result = 1;
 				} else {
-					// µ±ÕâÌõÂ·¾¶²»ÄÜÂú×ã´ø¿íĞèÇóÊ±£¬ÎÒÃÇÏÈÅĞ¶ÏÂ·µÄÖÕµãÄÜ·ñÂú×ãÕÒµ½µã²¹×ãÊ£ÏÂµÄ´ø¿í¡£
-					// Èç¹û¿ÉÒÔ£¬ÎÒÃÇ½«ÏÈÅÜÂúÕâÌõÂ·£¬ÔÙµ½ÖÕµã´¦Ñ°ÕÒµã²¹×ãÊ£ÓàËùĞè´ø¿í
-					// Èç¹û²»¿ÉÒÔ£¬ÔòºÏ²¢·şÎñÆ÷Ê§°Ü£¬Ö±½Ó·µ»Øresult = 2£»
+					// å½“è¿™æ¡è·¯å¾„ä¸èƒ½æ»¡è¶³å¸¦å®½éœ€æ±‚æ—¶ï¼Œæˆ‘ä»¬å…ˆåˆ¤æ–­è·¯çš„ç»ˆç‚¹èƒ½å¦æ»¡è¶³æ‰¾åˆ°ç‚¹è¡¥è¶³å‰©ä¸‹çš„å¸¦å®½ã€‚
+					// å¦‚æœå¯ä»¥ï¼Œæˆ‘ä»¬å°†å…ˆè·‘æ»¡è¿™æ¡è·¯ï¼Œå†åˆ°ç»ˆç‚¹å¤„å¯»æ‰¾ç‚¹è¡¥è¶³å‰©ä½™æ‰€éœ€å¸¦å®½
+					// å¦‚æœä¸å¯ä»¥ï¼Œåˆ™åˆå¹¶æœåŠ¡å™¨å¤±è´¥ï¼Œç›´æ¥è¿”å›result = 2ï¼›
 					newBand2 = minBand2;
 					int stillNeed = endServiceVertex.demand - minBand2;
-					// ½ØÈ¡list
+					// æˆªå–list
 					List<Integer> list2 = shortestPath.subList(place, shortestPath.size());
 					if (findOtherService(graph, list2, stillNeed, mayServiceVertexsList, serviceVertexsList)) {
-						// ¿ÉÒÔÕÒµ½µã²¹È«´ø¿íĞèÇó£¬¸üĞÂÕâÌõÂ·µÄ´ø¿í
+						// å¯ä»¥æ‰¾åˆ°ç‚¹è¡¥å…¨å¸¦å®½éœ€æ±‚ï¼Œæ›´æ–°è¿™æ¡è·¯çš„å¸¦å®½
 						for (int i = place; i < shortestPath.size() - 1; i++) {
 							updataBand(graph, shortestPath.get(i + 1), shortestPath.get(i), minBand2);
 							result = 1;
 						}
 					} else {
-						// ÎŞ·¨ÕÒµ½µãÀ´²¹×ã´ø¿í£¬Ö±½Ó·µ»Øresult = 2£»
+						// æ— æ³•æ‰¾åˆ°ç‚¹æ¥è¡¥è¶³å¸¦å®½ï¼Œç›´æ¥è¿”å›result = 2ï¼›
 						result = 2;
 						return result;
 					}
@@ -551,15 +559,15 @@ public class FirstDeploy implements Serializable {
 			 * if(minBand == 9999){ minBand = 0; } if(minBand2 == 9999){
 			 * minBand2 = 0; }
 			 */
-			// Á½ÌõÂ·¾¶¶¼ºÏ²¢³É¹¦Ö®ºóĞèÒªÔÚĞÂµÄ·şÎñÆ÷µã½¨Á¢·şÎñÆ÷£¬²¢°ÑËü¼ÓÈëµ½±¸Ñ¡·şÎñÆ÷¶ÓÁĞÖĞÈ¥
-			// Èç¹û¸ÃµãÒÑ¾­ÊÇ·şÎñÆ÷£¬ÔòÖ±½ÓÔö¼ÓÆäĞèÇóÁ¿¡£·´Ö®ÔòĞÂ½¨·şÎñÆ÷£¬ĞèÇóÁ¿ÎªÁ½Ìõ×ÓÂ·¾¶µÄminBandÖ®ºÍ
+			// ä¸¤æ¡è·¯å¾„éƒ½åˆå¹¶æˆåŠŸä¹‹åéœ€è¦åœ¨æ–°çš„æœåŠ¡å™¨ç‚¹å»ºç«‹æœåŠ¡å™¨ï¼Œå¹¶æŠŠå®ƒåŠ å…¥åˆ°å¤‡é€‰æœåŠ¡å™¨é˜Ÿåˆ—ä¸­å»
+			// å¦‚æœè¯¥ç‚¹å·²ç»æ˜¯æœåŠ¡å™¨ï¼Œåˆ™ç›´æ¥å¢åŠ å…¶éœ€æ±‚é‡ã€‚åä¹‹åˆ™æ–°å»ºæœåŠ¡å™¨ï¼Œéœ€æ±‚é‡ä¸ºä¸¤æ¡å­è·¯å¾„çš„minBandä¹‹å’Œ
 			if (getServiceVertex(maxBandId, mayServiceVertexsList, serviceVertexsList) == null) {
 				ServiceVertex serviceVertex = new ServiceVertex(graph, maxBandId, newBand + newBand2);
 				mayServiceVertexsList.add(serviceVertex);
-				// ¸üĞÂ¼ÇÂ¼Êı×é
+				// æ›´æ–°è®°å½•æ•°ç»„
 				// refresh(graph, serviceVertex, mayServiceVertexsList,
 				// serviceVertexsList);
-				// É¾³ıÒÑ¾­ºÏ²¢µÄ·şÎñÆ÷
+				// åˆ é™¤å·²ç»åˆå¹¶çš„æœåŠ¡å™¨
 				for (int i = mayServiceVertexsList.size() - 1; i >= 0; i--) {
 					if (mayServiceVertexsList.get(i).location == startServiceVertex.location
 							|| mayServiceVertexsList.get(i).location == endServiceVertex.location) {
@@ -567,7 +575,7 @@ public class FirstDeploy implements Serializable {
 					}
 				}
 			} else {
-				// Èç¹ûĞÂµÄ·şÎñÆ÷ÔÚÆğµãÎ»ÖÃ
+				// å¦‚æœæ–°çš„æœåŠ¡å™¨åœ¨èµ·ç‚¹ä½ç½®
 				if (maxBandId == startServiceVertex.location) {
 					startServiceVertex.demand += (newBand2);
 					for (int i = mayServiceVertexsList.size() - 1; i >= 0; i--) {
@@ -610,17 +618,17 @@ public class FirstDeploy implements Serializable {
 	public static boolean findOtherService(FirstGraph graph, List<Integer> shortestPath, int demand,
 			List<ServiceVertex> mayServiceVertexsList, List<ServiceVertex> serviceVertexsList) {
 		/*
-		 * ¼ÆËãÂ·¾¶ÉÏµÄËùÓĞ±ßµÄµ¥Î»¼Û¸ñÖ®ºÍ
+		 * è®¡ç®—è·¯å¾„ä¸Šçš„æ‰€æœ‰è¾¹çš„å•ä½ä»·æ ¼ä¹‹å’Œ
 		 * 
-		 * @param graph Í¼
+		 * @param graph å›¾
 		 * 
-		 * @param shortestPath ĞèÒª²¹×ã´ø¿íµÄÂ·¾¶
+		 * @param shortestPath éœ€è¦è¡¥è¶³å¸¦å®½çš„è·¯å¾„
 		 * 
-		 * @param demand ĞèÒªÔÚÖÕµã²¹×ãµÄ´ø¿í
+		 * @param demand éœ€è¦åœ¨ç»ˆç‚¹è¡¥è¶³çš„å¸¦å®½
 		 * 
-		 * @param mayServiceVertexsList ±¸Ñ¡·şÎñÆ÷¼¯ºÏ
+		 * @param mayServiceVertexsList å¤‡é€‰æœåŠ¡å™¨é›†åˆ
 		 * 
-		 * @param serviceVertexsList È·¶¨·şÎñÆ÷¼¯ºÏ
+		 * @param serviceVertexsList ç¡®å®šæœåŠ¡å™¨é›†åˆ
 		 * 
 		 */
 		boolean result = false;
@@ -628,7 +636,7 @@ public class FirstDeploy implements Serializable {
 		int nowDemand = demand;
 		int temp = shortestPath.get(shortestPath.size() - 1);
 		int pre = shortestPath.get(shortestPath.size() - 2);
-		List<Integer> list = new ArrayList<>();// ½¨Á¢Ò»¸ö¼¯ºÏ´¢´æÓëÖÕµãÏàÁ¬µÄ½Úµã±àºÅ
+		List<Integer> list = new ArrayList<>();// å»ºç«‹ä¸€ä¸ªé›†åˆå‚¨å­˜ä¸ç»ˆç‚¹ç›¸è¿çš„èŠ‚ç‚¹ç¼–å·
 		for (int i = 0; i < graph.struct[shortestPath.get(shortestPath.size() - 1)].size(); i++) {
 			if (graph.struct[temp].get(i)[0] != pre) {
 				list.add(graph.struct[temp].get(i)[0]);
@@ -649,7 +657,7 @@ public class FirstDeploy implements Serializable {
 			time++;
 			int maxWeight = 0;
 			int newServiceVertexId = -1;
-			// ¿ªÊ¼±éÀúlist£¬ÕÒµ½Óë¸Ã½ÚµãÏàÁ¬µÄ×î´óÈ¨ÖµµÄµã
+			// å¼€å§‹éå†listï¼Œæ‰¾åˆ°ä¸è¯¥èŠ‚ç‚¹ç›¸è¿çš„æœ€å¤§æƒå€¼çš„ç‚¹
 			for (int i = 0; i < list.size(); i++) {
 				if (getEdge(graph, temp, list.get(i)) != null && graph.weights[list.get(i)] > maxWeight
 						&& canGive(graph, temp, list.get(i)) != 0) {
@@ -664,18 +672,18 @@ public class FirstDeploy implements Serializable {
 			}
 			if (canGive(graph, temp, newServiceVertexId) >= nowDemand) {
 				result = true;
-				// ÅĞ¶Ï¸ÃµãÊÇ·ñÒÑ¾­×÷Îª·şÎñÆ÷ÔÚ¶ÓÁĞÖĞ¡£Èç¹ûÊÇÔòÖ»ĞèÒª¸üĞÂ·şÎñÆ÷µÄĞèÇó¡£
-				// Èç¹û²»´æÔÚ¸Ã·şÎñÆ÷ÔòĞèÒªĞÂ½¨Ò»¸ö·şÎñÆ÷¼Óµ½¶ÓÁĞÖĞÈ¥¡£
+				// åˆ¤æ–­è¯¥ç‚¹æ˜¯å¦å·²ç»ä½œä¸ºæœåŠ¡å™¨åœ¨é˜Ÿåˆ—ä¸­ã€‚å¦‚æœæ˜¯åˆ™åªéœ€è¦æ›´æ–°æœåŠ¡å™¨çš„éœ€æ±‚ã€‚
+				// å¦‚æœä¸å­˜åœ¨è¯¥æœåŠ¡å™¨åˆ™éœ€è¦æ–°å»ºä¸€ä¸ªæœåŠ¡å™¨åŠ åˆ°é˜Ÿåˆ—ä¸­å»ã€‚
 				if (getServiceVertex(newServiceVertexId, mayServiceVertexsList, serviceVertexsList) == null) {
 					ServiceVertex serviceVertex = new ServiceVertex(graph, newServiceVertexId, nowDemand);
 					updataBand(graph, temp, newServiceVertexId, nowDemand);
 					nowDemand = 0;
-					// System.out.println("¼ÓÈë"+ newServiceVertexId);
+					// System.out.println("åŠ å…¥"+ newServiceVertexId);
 					mayServiceVertexsList.add(serviceVertex);
 					// refresh(graph, serviceVertex, mayServiceVertexsList,
 					// serviceVertexsList);
 				} else {
-					// System.out.println("Ñ¡Ôñ"+ newServiceVertexId);
+					// System.out.println("é€‰æ‹©"+ newServiceVertexId);
 					getServiceVertex(newServiceVertexId, mayServiceVertexsList, serviceVertexsList).demand += nowDemand;
 					// refresh(graph, getServiceVertex(newServiceVertexId,
 					// mayServiceVertexsList, serviceVertexsList),
@@ -684,7 +692,7 @@ public class FirstDeploy implements Serializable {
 					nowDemand = 0;
 				}
 			} else {
-				// System.out.println("ÄÜ¸ø" + canGive(graph, temp,
+				// System.out.println("èƒ½ç»™" + canGive(graph, temp,
 				// newServiceVertexId));
 				if (getServiceVertex(newServiceVertexId, mayServiceVertexsList, serviceVertexsList) == null) {
 					ServiceVertex serviceVertex = new ServiceVertex(graph, newServiceVertexId,
@@ -694,12 +702,12 @@ public class FirstDeploy implements Serializable {
 					// serviceVertexsList);
 					nowDemand -= canGive(graph, temp, newServiceVertexId);
 					updataBand(graph, temp, newServiceVertexId, canGive(graph, temp, newServiceVertexId));
-					// System.out.println("*¼ÓÈë"+ newServiceVertexId);
-					// System.out.println("Ê£Óà" + nowDemand);
+					// System.out.println("*åŠ å…¥"+ newServiceVertexId);
+					// System.out.println("å‰©ä½™" + nowDemand);
 				} else {
-					// System.out.println("ÄÜ¸ø" + canGive(graph, temp,
+					// System.out.println("èƒ½ç»™" + canGive(graph, temp,
 					// newServiceVertexId));
-					// System.out.println("*Ñ¡Ôñ"+ newServiceVertexId);
+					// System.out.println("*é€‰æ‹©"+ newServiceVertexId);
 					getServiceVertex(newServiceVertexId, mayServiceVertexsList, serviceVertexsList).demand += canGive(
 							graph, temp, newServiceVertexId);
 					// refresh(graph, getServiceVertex(newServiceVertexId,
@@ -707,7 +715,7 @@ public class FirstDeploy implements Serializable {
 					// mayServiceVertexsList, serviceVertexsList);
 					nowDemand -= canGive(graph, temp, newServiceVertexId);
 					updataBand(graph, temp, newServiceVertexId, canGive(graph, temp, newServiceVertexId));
-					// System.out.println("Ê£Óà" + nowDemand);
+					// System.out.println("å‰©ä½™" + nowDemand);
 				}
 			}
 		}
@@ -715,7 +723,7 @@ public class FirstDeploy implements Serializable {
 	}
 
 	public static void sort(List<ServiceVertex> list) {
-		// ¶Ô·şÎñÆ÷µÄĞèÇóÅÅĞò
+		// å¯¹æœåŠ¡å™¨çš„éœ€æ±‚æ’åº
 		ServiceVertex[] array = new ServiceVertex[list.size()];
 		ServiceVertex temp = null;
 		for (int i = 0; i < list.size(); i++) {
@@ -747,10 +755,10 @@ public class FirstDeploy implements Serializable {
 		}
 	}
 
-	// Ë¢ĞÂ¶şÎ¬Êı×é£¬½â¾öµÚÒ»´Î²»ÄÜºÏ²¢£¬ĞÂÔöµÄµÚ¶ş´ÎÈ´¿ÉÒÔºÏ²¢µÄÇé¿ö
+	// åˆ·æ–°äºŒç»´æ•°ç»„ï¼Œè§£å†³ç¬¬ä¸€æ¬¡ä¸èƒ½åˆå¹¶ï¼Œæ–°å¢çš„ç¬¬äºŒæ¬¡å´å¯ä»¥åˆå¹¶çš„æƒ…å†µ
 	public static void refresh(FirstGraph graph, ServiceVertex serviceVertex, List<ServiceVertex> mayServiceVertexsList,
 			List<ServiceVertex> serviceVertexs) {
-		// Ë¢ĞÂÊı×é
+		// åˆ·æ–°æ•°ç»„
 		int location = serviceVertex.location;
 		for (int i = 0; i < mayServiceVertexsList.size(); i++) {
 			haveGone[location][mayServiceVertexsList.get(i).location] = 0;
@@ -764,12 +772,12 @@ public class FirstDeploy implements Serializable {
 
 	public static void deleteImportToServiceVertex(FirstGraph graph, ServiceVertex serviceVertex,
 			List<ServiceVertex> mayServiceVertexsList, List<ServiceVertex> serviceVertexs) {
-		// ÈÃÊäÈë·şÎñÆ÷µãµÄ´ø¿íÎª0
+		// è®©è¾“å…¥æœåŠ¡å™¨ç‚¹çš„å¸¦å®½ä¸º0
 		int location = serviceVertex.location;
 		for (int i = 0; i < graph.struct[serviceVertex.location].size(); i++) {
 			if (location < graph.struct[location].get(i)[0]) {
 				if (getEdge(graph, graph.struct[location].get(i)[1]).usedBand < 0) {
-					// Èç¹û¸ø¸ÃµãÊäÈë´ø¿íµÄÊÇÒ»¸ö·şÎñÆ÷£¬Ôò¸Ã·şÎñÆ÷µÄĞèÇó¼õĞ¡usedBandµÄ¾ø¶ÔÖµ
+					// å¦‚æœç»™è¯¥ç‚¹è¾“å…¥å¸¦å®½çš„æ˜¯ä¸€ä¸ªæœåŠ¡å™¨ï¼Œåˆ™è¯¥æœåŠ¡å™¨çš„éœ€æ±‚å‡å°usedBandçš„ç»å¯¹å€¼
 					if (getServiceVertex(graph.struct[location].get(i)[0], mayServiceVertexsList,
 							serviceVertexs) != null) {
 						getServiceVertex(graph.struct[location].get(i)[0], mayServiceVertexsList,
@@ -794,7 +802,7 @@ public class FirstDeploy implements Serializable {
 	}
 
 	public static int canGive(FirstGraph graph, int needPoint, int givePoint) {
-		// ¼ÆËãÒ»¸ö½Úµãµ½ÁíÒ»¸ö½ÚµãµÄÊä³öÄÜÁ¦
+		// è®¡ç®—ä¸€ä¸ªèŠ‚ç‚¹åˆ°å¦ä¸€ä¸ªèŠ‚ç‚¹çš„è¾“å‡ºèƒ½åŠ›
 		int result = 0;
 		FirstEdge edge = null;
 		if (needPoint < givePoint) {
@@ -809,7 +817,7 @@ public class FirstDeploy implements Serializable {
 
 	public static void updataBand(FirstGraph graph, int needPoint, int givePoint, int giveBand) {
 		/*
-		 * ¸Ã·½·¨Ê¹ÓÃÊ±±ØĞë±£Ö¤giveBandĞ¡ÓÚµÈÓÚÁ½µãÖ®¼äµÄ¹©¸øÄÜÁ¦
+		 * è¯¥æ–¹æ³•ä½¿ç”¨æ—¶å¿…é¡»ä¿è¯giveBandå°äºç­‰äºä¸¤ç‚¹ä¹‹é—´çš„ä¾›ç»™èƒ½åŠ›
 		 */
 		FirstEdge edge = null;
 		if (needPoint < givePoint) {
@@ -824,13 +832,13 @@ public class FirstDeploy implements Serializable {
 	public static int pathCost(FirstGraph graph, List<Integer> pathList, int ServiceVertexId,
 			ServiceVertex startServiceVertex, ServiceVertex endServiceVertex) {
 		/*
-		 * ¼ÆËãÂ·¾¶ÉÏµÄËùÓĞ±ßµÄµ¥Î»¼Û¸ñÖ®ºÍ
+		 * è®¡ç®—è·¯å¾„ä¸Šçš„æ‰€æœ‰è¾¹çš„å•ä½ä»·æ ¼ä¹‹å’Œ
 		 * 
-		 * @param graph Í¼
+		 * @param graph å›¾
 		 * 
-		 * @param pathList ĞèÒª¼ÆËãµÄÂ·¾¶
+		 * @param pathList éœ€è¦è®¡ç®—çš„è·¯å¾„
 		 * 
-		 * @param ServiceVertexId ¸ÃÏßÂ·ÉÏÑ¡ÔñµÄĞÂµÄ±¸Ñ¡·şÎñÆ÷
+		 * @param ServiceVertexId è¯¥çº¿è·¯ä¸Šé€‰æ‹©çš„æ–°çš„å¤‡é€‰æœåŠ¡å™¨
 		 * 
 		 */
 		int cost = 0;
@@ -851,11 +859,11 @@ public class FirstDeploy implements Serializable {
 
 	public static int pathCost(FirstGraph graph, List<Integer> pathList) {
 		/*
-		 * ¼ÆËãÂ·¾¶ÉÏµÄËùÓĞ±ßµÄµ¥Î»¼Û¸ñÖ®ºÍ
+		 * è®¡ç®—è·¯å¾„ä¸Šçš„æ‰€æœ‰è¾¹çš„å•ä½ä»·æ ¼ä¹‹å’Œ
 		 * 
-		 * @param graph Í¼
+		 * @param graph å›¾
 		 * 
-		 * @param pathList ĞèÒª¼ÆËãµÄÂ·¾¶
+		 * @param pathList éœ€è¦è®¡ç®—çš„è·¯å¾„
 		 * 
 		 */
 		int cost = 0;
@@ -891,16 +899,16 @@ public class FirstDeploy implements Serializable {
 
 	public static int computeVertexInBand(FirstGraph graph, int vertexNum, int connectedVertexNum) {
 		/*
-		 * ¼ÆËãÒ»¸ö½ÚµãµÄÊ£ÓàÊäÈëÄÜÁ¦
+		 * è®¡ç®—ä¸€ä¸ªèŠ‚ç‚¹çš„å‰©ä½™è¾“å…¥èƒ½åŠ›
 		 * 
-		 * @param graph Í¼
+		 * @param graph å›¾
 		 * 
-		 * @param vertexNum Ëù¼ÆËãµÄ½ÚµãµÄIdºÅ
+		 * @param vertexNum æ‰€è®¡ç®—çš„èŠ‚ç‚¹çš„Idå·
 		 * 
-		 * @param connectedVertexNum ĞèÒª¸Ä½ÚµãÊäÈë´ø¿íµÄ½ÚµãIdºÅ
-		 * ±éÀú¸Ã½ÚµãµÄ±ß¡£Èç¹û±ßµÄÁíÒ»¸ö½ÚµãIdĞ¡ÓÚvertexNum £¬ÔòÊ£ÓàÊäÈëÎªÊ£ÓàÉÏĞĞ´ø¿í¡£ ·´Ö®ÎªÊ£ÓàÏÂĞĞ´ø¿í¡£
-		 * ×¢ÒâÈç¹ûÄÇÌõ±ßµÄÁ½¸ö¶¥µãÊÇvertexNumºÍconnectedVertexNumÔòºöÂÔÕâÌõ±ßµÄÊä³öÄÜÁ¦
-		 * ÒòÎªÕâÌõ±ßÔÚÁ½¸ö½ÚµãÖĞ±ßÊäÈë±ßÊä³öÊÇÃ»ÓĞÈÎºÎÒâÒåµÄ
+		 * @param connectedVertexNum éœ€è¦æ”¹èŠ‚ç‚¹è¾“å…¥å¸¦å®½çš„èŠ‚ç‚¹Idå·
+		 * éå†è¯¥èŠ‚ç‚¹çš„è¾¹ã€‚å¦‚æœè¾¹çš„å¦ä¸€ä¸ªèŠ‚ç‚¹Idå°äºvertexNum ï¼Œåˆ™å‰©ä½™è¾“å…¥ä¸ºå‰©ä½™ä¸Šè¡Œå¸¦å®½ã€‚ åä¹‹ä¸ºå‰©ä½™ä¸‹è¡Œå¸¦å®½ã€‚
+		 * æ³¨æ„å¦‚æœé‚£æ¡è¾¹çš„ä¸¤ä¸ªé¡¶ç‚¹æ˜¯vertexNumå’ŒconnectedVertexNumåˆ™å¿½ç•¥è¿™æ¡è¾¹çš„è¾“å‡ºèƒ½åŠ›
+		 * å› ä¸ºè¿™æ¡è¾¹åœ¨ä¸¤ä¸ªèŠ‚ç‚¹ä¸­è¾¹è¾“å…¥è¾¹è¾“å‡ºæ˜¯æ²¡æœ‰ä»»ä½•æ„ä¹‰çš„
 		 * 
 		 */
 		int vertexInBand = 0;
@@ -920,12 +928,12 @@ public class FirstDeploy implements Serializable {
 
 	public static int computeVertexInBand(FirstGraph graph, int vertexNum) {
 		/*
-		 * ¼ÆËãÒ»¸ö½ÚµãµÄÊ£ÓàÊäÈëÄÜÁ¦
+		 * è®¡ç®—ä¸€ä¸ªèŠ‚ç‚¹çš„å‰©ä½™è¾“å…¥èƒ½åŠ›
 		 * 
-		 * @param graph Í¼
+		 * @param graph å›¾
 		 * 
-		 * @param vertexNum Ëù¼ÆËãµÄ½ÚµãµÄIdºÅ ±éÀú¸Ã½ÚµãµÄ±ß¡£Èç¹û±ßµÄÁíÒ»¸ö½ÚµãIdĞ¡ÓÚvertexNum
-		 * £¬ÔòÊ£ÓàÊäÈëÎªÊ£ÓàÉÏĞĞ´ø¿í¡£ ·´Ö®ÎªÊ£ÓàÏÂĞĞ´ø¿í¡£
+		 * @param vertexNum æ‰€è®¡ç®—çš„èŠ‚ç‚¹çš„Idå· éå†è¯¥èŠ‚ç‚¹çš„è¾¹ã€‚å¦‚æœè¾¹çš„å¦ä¸€ä¸ªèŠ‚ç‚¹Idå°äºvertexNum
+		 * ï¼Œåˆ™å‰©ä½™è¾“å…¥ä¸ºå‰©ä½™ä¸Šè¡Œå¸¦å®½ã€‚ åä¹‹ä¸ºå‰©ä½™ä¸‹è¡Œå¸¦å®½ã€‚
 		 * 
 		 */
 		int vertexInBand = 0;
@@ -943,12 +951,12 @@ public class FirstDeploy implements Serializable {
 
 	public static int computeVertexBand(FirstGraph graph, int vertexNum) {
 		/*
-		 * ¼ÆËãÒ»¸ö½ÚµãµÄÊ£ÓàÊä³öÄÜÁ¦
+		 * è®¡ç®—ä¸€ä¸ªèŠ‚ç‚¹çš„å‰©ä½™è¾“å‡ºèƒ½åŠ›
 		 * 
-		 * @param graph Í¼
+		 * @param graph å›¾
 		 * 
-		 * @param vertexNum Ëù¼ÆËãµÄ½ÚµãµÄIdºÅ ±éÀú¸Ã½ÚµãµÄ±ß¡£Èç¹û±ßµÄÁíÒ»¸ö½ÚµãIdĞ¡ÓÚvertexNum
-		 * £¬ÔòÊ£ÓàÊä³öÎªÊ£ÓàÏÂĞĞ´ø¿í¡£ ·´Ö®ÎªÊ£ÓàÉÏĞĞ´ø¿í¡£
+		 * @param vertexNum æ‰€è®¡ç®—çš„èŠ‚ç‚¹çš„Idå· éå†è¯¥èŠ‚ç‚¹çš„è¾¹ã€‚å¦‚æœè¾¹çš„å¦ä¸€ä¸ªèŠ‚ç‚¹Idå°äºvertexNum
+		 * ï¼Œåˆ™å‰©ä½™è¾“å‡ºä¸ºå‰©ä½™ä¸‹è¡Œå¸¦å®½ã€‚ åä¹‹ä¸ºå‰©ä½™ä¸Šè¡Œå¸¦å®½ã€‚
 		 * 
 		 */
 		int vertexBand = 0;
@@ -966,11 +974,11 @@ public class FirstDeploy implements Serializable {
 
 	public static FirstEdge getEdge(FirstGraph graph, int edgeNum) {
 		/*
-		 * ¶¨ÒåÒ»¸ö¸ù¾İÍ¼ºÍ±ßµÄIDºÅ»ñÈ¡±ßµÄ·½·¨
+		 * å®šä¹‰ä¸€ä¸ªæ ¹æ®å›¾å’Œè¾¹çš„IDå·è·å–è¾¹çš„æ–¹æ³•
 		 * 
-		 * @param graph ÏëÒª·µ»ØµÄ±ßËùÔÚµÄÍ¼
+		 * @param graph æƒ³è¦è¿”å›çš„è¾¹æ‰€åœ¨çš„å›¾
 		 * 
-		 * @param edgeNum ±ßµÄIDºÅ
+		 * @param edgeNum è¾¹çš„IDå·
 		 * 
 		 */
 		FirstEdge edge;
@@ -985,13 +993,13 @@ public class FirstDeploy implements Serializable {
 
 	public static FirstEdge getEdge(FirstGraph graph, int startNum, int endNum) {
 		/*
-		 * ¶¨ÒåÒ»¸ö¸ù¾İÍ¼ºÍ±ßµÄÁ½¸ö¶¥µã»ñÈ¡±ßµÄ·½·¨
+		 * å®šä¹‰ä¸€ä¸ªæ ¹æ®å›¾å’Œè¾¹çš„ä¸¤ä¸ªé¡¶ç‚¹è·å–è¾¹çš„æ–¹æ³•
 		 * 
-		 * @param graph ÏëÒª·µ»ØµÄ±ßËùÔÚµÄÍ¼
+		 * @param graph æƒ³è¦è¿”å›çš„è¾¹æ‰€åœ¨çš„å›¾
 		 * 
-		 * @param startNum Æğµã¡£¼´ÎÒÃÇ»áÔÚgraph.struct[startNum]ÖĞ²éÕÒÊÇ·ñ´æÔÚÕâÌõ±ß
+		 * @param startNum èµ·ç‚¹ã€‚å³æˆ‘ä»¬ä¼šåœ¨graph.struct[startNum]ä¸­æŸ¥æ‰¾æ˜¯å¦å­˜åœ¨è¿™æ¡è¾¹
 		 * 
-		 * @param endNum ±ßµÄÁíÒ»¸ö¶¥µã
+		 * @param endNum è¾¹çš„å¦ä¸€ä¸ªé¡¶ç‚¹
 		 * 
 		 */
 		FirstEdge edge;
@@ -1006,32 +1014,32 @@ public class FirstDeploy implements Serializable {
 
 	public static List<Integer> dijkstra(FirstGraph graph, int startPoint, int endPoint) {
 		/*
-		 * ÇóÁ½¸ö½ÚµãÖ®¼äµÄ×î¶ÌÂ·¾¶£¬½«µ¥¼Û×÷ÎªÁ´Â·È¨Öµ Ô­ÀíÊÇdijkstraËã·¨,Ê±¼ä¸´ÔÓ¶ÈO(VlogV),V±íÊ¾½ÚµãÊıÄ¿
+		 * æ±‚ä¸¤ä¸ªèŠ‚ç‚¹ä¹‹é—´çš„æœ€çŸ­è·¯å¾„ï¼Œå°†å•ä»·ä½œä¸ºé“¾è·¯æƒå€¼ åŸç†æ˜¯dijkstraç®—æ³•,æ—¶é—´å¤æ‚åº¦O(VlogV),Vè¡¨ç¤ºèŠ‚ç‚¹æ•°ç›®
 		 * 
-		 * @param graph Í¼
+		 * @param graph å›¾
 		 * 
-		 * @param startPoint Æğµã
+		 * @param startPoint èµ·ç‚¹
 		 * 
-		 * @param endPoint ÖÕµã
+		 * @param endPoint ç»ˆç‚¹
 		 * 
-		 * @return List<Integer> Â·¾¶ÖĞµÄ½Úµã×ø±ê¼¯£¬×¢ÒâÊÇ·´ÏòµÄ£¬¼´´ÓÖÕµãµ½Æğµã
+		 * @return List<Integer> è·¯å¾„ä¸­çš„èŠ‚ç‚¹åæ ‡é›†ï¼Œæ³¨æ„æ˜¯åå‘çš„ï¼Œå³ä»ç»ˆç‚¹åˆ°èµ·ç‚¹
 		 */
 		class Heap {
 			/*
-			 * HeapÀà£¬±íÊ¾×îĞ¡¶Ñ£¬ÓÃÓÚÑ°ÕÒµ±Ç°×î¶ÌÂ·¾¶¶ÔÓ¦µÄ½Úµã
+			 * Heapç±»ï¼Œè¡¨ç¤ºæœ€å°å †ï¼Œç”¨äºå¯»æ‰¾å½“å‰æœ€çŸ­è·¯å¾„å¯¹åº”çš„èŠ‚ç‚¹
 			 */
 
-			public Vector<FirstVertex> vertexList; // ½ÚµãÏòÁ¿
+			public Vector<FirstVertex> vertexList; // èŠ‚ç‚¹å‘é‡
 
-			Heap() { // ¹¹Ôìº¯Êı1
+			Heap() { // æ„é€ å‡½æ•°1
 				this.vertexList = new Vector<FirstVertex>();
 			}
 
 			Heap(FirstVertex[] vertexList) {
 				/*
-				 * ¹¹Ôìº¯Êı2
+				 * æ„é€ å‡½æ•°2
 				 * 
-				 * @vertexList ½ÚµãÁĞ±í Õâ¸öº¯ÊıÔÚÕâÀïÃ»ÓĞ×÷ÓÃ
+				 * @vertexList èŠ‚ç‚¹åˆ—è¡¨ è¿™ä¸ªå‡½æ•°åœ¨è¿™é‡Œæ²¡æœ‰ä½œç”¨
 				 */
 				this.vertexList = new Vector<FirstVertex>();
 				for (FirstVertex vertex : vertexList) {
@@ -1041,9 +1049,9 @@ public class FirstDeploy implements Serializable {
 
 			public void insert(FirstVertex ver) {
 				/*
-				 * ½«ÔªËØ¼ÓÈëµ½×îĞ¡¶Ñ
+				 * å°†å…ƒç´ åŠ å…¥åˆ°æœ€å°å †
 				 * 
-				 * @param ver ´ı¼ÓÈëµÄÔªËØ
+				 * @param ver å¾…åŠ å…¥çš„å…ƒç´ 
 				 * 
 				 */
 				int hole = vertexList.size();
@@ -1056,7 +1064,7 @@ public class FirstDeploy implements Serializable {
 
 			public FirstVertex deleteMin() {
 				/*
-				 * É¾³ı×îĞ¡µÄÔªËØ²¢·µ»Ø
+				 * åˆ é™¤æœ€å°çš„å…ƒç´ å¹¶è¿”å›
 				 * 
 				 */
 				if (vertexList.isEmpty()) {

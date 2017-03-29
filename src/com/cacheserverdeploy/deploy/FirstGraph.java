@@ -10,20 +10,20 @@ import java.util.Set;
 
 public class FirstGraph implements Serializable {
 	/*
-	 * Í¼Àà
-	 * @param struct ±£´æÍ¼µÄ½á¹¹£¬´æ´¢ĞÎÊ½ÎªÁÚ½Ó±í
-	 * @param netVertexNum ÍøÂç½ÚµãÊıÄ¿
-	 * @param edgeList Í¼ÖĞ±ßµÄÁ´±í
+	 * å›¾ç±»
+	 * @param struct ä¿å­˜å›¾çš„ç»“æ„ï¼Œå­˜å‚¨å½¢å¼ä¸ºé‚»æ¥è¡¨
+	 * @param netVertexNum ç½‘ç»œèŠ‚ç‚¹æ•°ç›®
+	 * @param edgeList å›¾ä¸­è¾¹çš„é“¾è¡¨
 	 * 
 	 */
-	public ArrayList<int []> [] struct; //ArrayListÊı×é£¬ÏÂ±êÎª½Úµãid£¬ArrayListÖĞµÄÔªËØÊÇÊı¶Ô,µÚÒ»¸öÊıÎª½Úµãid,µÚ¶ş¸öÊıÎªÁ´Â·id
+	public ArrayList<int []> [] struct; //ArrayListæ•°ç»„ï¼Œä¸‹æ ‡ä¸ºèŠ‚ç‚¹idï¼ŒArrayListä¸­çš„å…ƒç´ æ˜¯æ•°å¯¹,ç¬¬ä¸€ä¸ªæ•°ä¸ºèŠ‚ç‚¹id,ç¬¬äºŒä¸ªæ•°ä¸ºé“¾è·¯id
 	public int netVertexNum;
 	public FirstEdge[] edgeList;
 	public int[] weights;
 	public Set<Integer> connected;
 	public int[][] array;
 	
-	FirstGraph(int netVertexNum, FirstEdge [] edgeList, Set<Integer> connected ){ //¹¹Ôì·½·¨
+	FirstGraph(int netVertexNum, FirstEdge [] edgeList, Set<Integer> connected ){ //æ„é€ æ–¹æ³•
 		this.edgeList = edgeList;
 		this.struct = new ArrayList [netVertexNum];
 		this.connected = connected;
