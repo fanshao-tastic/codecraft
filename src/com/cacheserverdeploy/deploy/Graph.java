@@ -8,11 +8,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class Graph implements Serializable{
@@ -30,20 +31,17 @@ public class Graph implements Serializable{
 	public Map<Integer, Integer> [] struct; //ArrayList数组，下标为节点id，ArrayList中的元素是数对,第一个数为节点id,第二个数为链路id
 	public int netVertexNum;
 	public List<Edge> edgeList;
-	public List<Integer> serverList;
 	public List<ConsumerVertex> consumerList;
-	//public Map<Integer,Integer> nodeValueList;
 	public int maxCount;
 	public int minCount;
+	public boolean sure;
 	
-	public Graph(int netVertexNum, Edge [] edgeList, List<ConsumerVertex> consumerList, List<Integer> serverList) { //构造方法
-		this.struct = new HashMap[netVertexNum + 2];
+	public Graph(int netVertexNum, Edge [] edgeList, List<ConsumerVertex> consumerList) { //构造方法
+		this.sure = false;
+		this.struct = new HashMap [netVertexNum + 2];
 		this.edgeList = new ArrayList<Edge>();
-		this.serverList = serverList;
 		this.consumerList = consumerList;
 		this.maxCount = consumerList.size();
-		//this.nodeValueList = setNodeValueList(netVertexNum,edgeList);
-		
 		this.minCount = 0;
 		for(int i = 0; i < edgeList.length;i++) {
 			this.edgeList.add(edgeList[i]);//加入原始的边
@@ -51,7 +49,7 @@ public class Graph implements Serializable{
  		this.netVertexNum = netVertexNum + 2;//网络节点数目+2，新建两个虚拟的网络节点，一个表示总服务器，一个表示总消费节点
 		//初始化过程
 		for(int i = 0; i < netVertexNum + 2; i++) {
-			struct[i] = new LinkedHashMap<Integer, Integer>();
+			struct[i] = new HashMap<Integer, Integer>();
 		}
 		
 		for(int i = 0; i < edgeList.length; i++) {
@@ -60,6 +58,36 @@ public class Graph implements Serializable{
 			struct[thisEdge.endPoint].put(thisEdge.startPoint, i);
 		}
 		
+		List<Integer> eachVertex = new ArrayList<Integer>();
+    	for(int i = 0; i < struct.length - 2; i++) {
+    		int temp = getOuputAbility(i);
+    		eachVertex.add(temp);
+    		//System.out.println(i + " : " + temp);
+    	}
+    	
+    	Map<Integer, ConsumerVertex> m = new HashMap<Integer, ConsumerVertex>();
+		int demand = 0;
+    	for(int i = 0;i < consumerList.size(); i++) {
+    		m.put(consumerList.get(i).connectedVertex, consumerList.get(i));
+    		demand += consumerList.get(i).demand;//计算总需求
+    	}
+    	
+    	Collections.sort(eachVertex);
+    	Collections.reverse(eachVertex);
+//    	for(Integer i : eachVertex) {
+//    		System.out.println(i);
+//    	}
+    	for(int t = 0; t < demand; minCount++) {
+    		t += eachVertex.get(minCount);
+    	}
+    	minCount++; //确定服务器个数下限
+	}
+	
+	public void addServerList(List<Integer> serverList) {
+		if(sure) {
+			System.out.println("Servers have been deployed!");
+			return;
+		}
 		Set<Integer> set = new HashSet<Integer>();//新建一个Set，利用contains函数查找与消费节点相连的网络节点
 		for(int i = 0; i < consumerList.size(); i++) {
 			set.add(consumerList.get(i).connectedVertex);
@@ -68,7 +96,7 @@ public class Graph implements Serializable{
 		int [] serverBand = new int [serverList.size()];//服务器节点的输出能力,若该点和消费节点连接，输出能力会加入消费节点的需求
 
 		for(int i = 0; i < serverList.size(); i++) {
-			int temp = getOuputAbility(i);
+			int temp = getOuputAbility(serverList.get(i));
 			if(set.contains(serverList.get(i))) {
 				for(int j = 0; j < consumerList.size(); j++) {
 					if(consumerList.get(j).connectedVertex == serverList.get(i)) {
@@ -79,7 +107,6 @@ public class Graph implements Serializable{
 			}
 			serverBand[i] = temp;
 		}
-		
 		int id = this.edgeList.size() - 1;
 		for(int i = 0; i < serverList.size(); i++) {//增加服务器虚拟节点,定为所有节点的倒数第二个，只有出没有入
 			int start = struct.length - 2;
@@ -108,7 +135,7 @@ public class Graph implements Serializable{
 //			for(int i = 0; i < struct.length; i++) {
 //				if(struct[i].size() == 1) {//存在单支，将该点的邻接表置空，删除所有与该点的连接
 //					flag = false;
-//					//System.out.println("ONE");
+//					System.out.println("ONE");
 //					for(Integer x : struct[i].keySet()) {
 //						struct[x].remove(i);
 //					}
@@ -119,122 +146,50 @@ public class Graph implements Serializable{
 //				break;
 //			}
 //		}
-		
-//		Map<Integer, ConsumerVertex> m = new HashMap<Integer, ConsumerVertex>();
-//		int demand = 0;
-//    	for(int i = 0;i < consumerList.size(); i++) {
-//    		m.put(consumerList.get(i).connectedVertex, consumerList.get(i));
-//    		demand += consumerList.get(i).demand;//计算总需求
-//    	}
-//    	
-//		List<Integer> eachVertex = new ArrayList<Integer>();
-//    	for(int i = 0; i < struct.length - 2; i++) {
-//    		int temp = getOuputAbility(i);
-//    		eachVertex.add(temp);
-//    	}
-//    	
-//    	Collections.sort(eachVertex);
-//    	Collections.reverse(eachVertex);
-//    	for(int t = 0; t < demand; minCount++) {
-//    		t += eachVertex.get(minCount);
-//    	}
-//    	minCount++; //确定服务器个数下限
-		
 	}
-
-	public void setServerList(List<Integer> serverList){
-		Set<Integer> server=new HashSet<Integer>();
-		for(Integer i:serverList){
-			server.add(i);
+	
+	public List<Integer> getTopN(int n) {
+		List<Integer> output = new ArrayList<Integer>();
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		for(int i = 0; i < struct.length - 2; i++) {
+			map.put(i, getOuputAbility(i));
 		}
-		List<Integer> newList=new ArrayList<Integer>();
-		int count=0;
-		for(Integer i:server){
-			newList.add(count, i);
-			count++;
+		List<Entry<Integer, Integer>> list = new ArrayList<Entry<Integer, Integer>>(map.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
+		    public int compare(Map.Entry<Integer, Integer> o1,
+		            Map.Entry<Integer, Integer> o2) {
+		        return (o2.getValue() - o1.getValue());
+		    }
+		});
+		for(int i = 0; i < n; i++) {
+			output.add(list.get(i).getKey());
+			//System.out.println(list.get(i).getKey());
+			//System.out.println(list.get(i).getValue());
 		}
-		serverList=newList;
-		this.serverList=newList;
-		Set<Integer> set = new HashSet<Integer>();//新建一个Set，利用contains函数查找与消费节点相连的网络节点
+		
+		return output;
+	}
+	
+	public List<Integer> getTopServer(int n) {
+		List<Integer> output = new ArrayList<Integer>();
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 		for(int i = 0; i < consumerList.size(); i++) {
-			set.add(consumerList.get(i).connectedVertex);
+			map.put(consumerList.get(i).connectedVertex, getOuputAbility(consumerList.get(i).connectedVertex));
+		}
+		List<Entry<Integer, Integer>> list = new ArrayList<Entry<Integer, Integer>>(map.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
+		    public int compare(Map.Entry<Integer, Integer> o1,
+		            Map.Entry<Integer, Integer> o2) {
+		        return (o2.getValue() - o1.getValue());
+		    }
+		});
+		for(int i = 0; i < n; i++) {
+			output.add(list.get(i).getKey());
+			//System.out.println(list.get(i).getKey());
+			//System.out.println(list.get(i).getValue());
 		}
 		
-		int [] serverBand = new int [serverList.size()];//服务器节点的输出能力,若该点和消费节点连接，输出能力会加入消费节点的需求
-
-		for(int i = 0; i < serverList.size(); i++) {
-			int temp = getOuputAbility(i);
-			if(set.contains(serverList.get(i))) {
-				for(int j = 0; j < consumerList.size(); j++) {
-					if(consumerList.get(j).connectedVertex == serverList.get(i)) {
-						temp += consumerList.get(j).demand;
-						break;
-					}
-				}
-			}
-			serverBand[i] = temp;
-		}
-		
-		int id = this.edgeList.size() - 1;
-		for(int i = 0; i < serverList.size(); i++) {//增加服务器虚拟节点,定为所有节点的倒数第二个，只有出没有入
-			int start = struct.length - 2;
-			int end = serverList.get(i);
-			id++;//边的id自增1
-			int band = serverBand[i];//带宽表示为该点的输出能力
-			int price = 0;//虚拟节点，单价为0
-			Edge edge = new Edge(id, start, end, band, price);
-			this.edgeList.add(edge);
-			struct[struct.length - 2].put(end, id);
-		}
-		
-		for(int i = 0; i < consumerList.size();i++) {//增加消费总结点,定为所有节点的最后一个,只有入没有出
-			id++;
-			int start = consumerList.get(i).connectedVertex;
-			int end = struct.length - 1;
-			int band = consumerList.get(i).demand;//带宽表示为需求
-			int price = 0;//虚拟节点，单价为0
-			Edge edge = new Edge(id, start, end, band, price);
-			this.edgeList.add(edge);
-			struct[start].put(end, id);
-		}
-		
-		while(true) {//删除单支
-			boolean flag = true;
-			for(int i = 0; i < struct.length; i++) {
-				if(struct[i].size() == 1) {//存在单支，将该点的邻接表置空，删除所有与该点的连接
-					flag = false;
-					//System.out.println("ONE");
-					for(Integer x : struct[i].keySet()) {
-						struct[x].remove(i);
-					}
-					struct[i].clear();
-				}
-			}
-			if(flag) {
-				break;
-			}
-		}
-		
-		Map<Integer, ConsumerVertex> m = new HashMap<Integer, ConsumerVertex>();
-		int demand = 0;
-    	for(int i = 0;i < consumerList.size(); i++) {
-    		m.put(consumerList.get(i).connectedVertex, consumerList.get(i));
-    		demand += consumerList.get(i).demand;//计算总需求
-    	}
-    	
-		List<Integer> eachVertex = new ArrayList<Integer>();
-    	for(int i = 0; i < struct.length - 2; i++) {
-    		int temp = getOuputAbility(i);
-    		eachVertex.add(temp);
-    	}
-    	
-    	Collections.sort(eachVertex);
-    	Collections.reverse(eachVertex);
-//    	for(int t = 0; t < demand; minCount++) {
-//    		t += eachVertex.get(minCount);
-//    	}
-//    	minCount++; //确定服务器个数下限
-		//return minCount;
+		return output;
 	}
 	
 	private int getOuputAbility(int i) {
@@ -261,10 +216,6 @@ public class Graph implements Serializable{
 		for (int i = 0; i < consumerList.size(); i++) {
 			int vertex = consumerList.get(i).connectedVertex;
 			int demand = consumerList.get(i).demand;
-//			if(demand>100){  //大于100的直接布置服务器
-//				output.add(vertex);
-//				continue;
-//			}
 			Map<Integer, Integer> link = struct[vertex];
 			if (link.size() > 2) {//多支情况
 				if (getOuputAbility(vertex) - demand < demand) {
@@ -306,9 +257,7 @@ public class Graph implements Serializable{
 						} else {
 							flag = false;
 						}
-
 					}
-
 				}
 			}
 		}
