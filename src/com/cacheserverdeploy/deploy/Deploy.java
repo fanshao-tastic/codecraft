@@ -60,12 +60,20 @@ public class Deploy {
 		//List<Integer> serverList2 = new ArrayList<Integer>();
 		Graph copy1 = graph.myclone();
 		List<Integer> serverList1 = copy1.getTopServer(graph.maxCount);
-		List<Integer> serverList5 = new ArrayList<Integer>();
+		List<Integer> serverList2 = new ArrayList<Integer>();
 		int count = serverList1.size();
-		
-		//Collections.shuffle(serverList1);
-//		Collections.sort(serverList1);
-//		Collections.reverse(serverList1);
+		int count1=0;
+		int count2=0;
+		for(int i=0;i<count;i++){
+			if(serverList1.get(i)>=80){
+				count1++;
+				//serverList2.add(serverList1.get(i));
+			}
+			if(serverList1.get(i)<=30){
+				count2++;
+			}
+		}
+		System.out.println(count1+"  "+count2);
 		Timer timer = new Timer();
 		  timer.schedule(new TimerTask() {
 		      public void run() {		          
@@ -73,21 +81,22 @@ public class Deploy {
 		    	  System.out.println("-------设定要指定任务--------");
 		      }
 		    }, 85000);// 设定指定的时间time,此处为85秒
-		while (flag) {
+		//flag =false;
+		while (flag &&count>=0) {
 			Graph copy = graph.myclone();
 			List<Integer> serverList3 = new ArrayList<Integer>();			
 			for(int i=0;i<count;i++){
 				serverList3.add(serverList1.get(i));
 			}
-			for(Integer i:serverList5){
+			for(Integer i:serverList2){
 				serverList3.add(i);
 			}			
 			copy.addServerList(serverList3);			
 			List<List<Integer>> out = getOutput(copy, demand);
 			if (out.get(out.size() - 1).get(0) == -1) {
-				//System.out.println("warning!!!!!!!!!!!!!!!!!!!!!!!!!");
-				System.out.println(count);
-				serverList5.add(serverList1.get(count));
+				System.out.println("warning!!!!!!!!!!!!!!!!!!!!!!!!!");
+				//System.out.println(count);
+				serverList2.add(serverList1.get(count));
 
 			} else {
 				out.remove(out.size() - 1);
@@ -105,24 +114,22 @@ public class Deploy {
 			}			
 			//serverList.remove(serverList.size()-1);
 			count--;
-			if(netVertexNum<255){
-				if(count==0){
-					break;
-				}
-			}else if(netVertexNum>255 && netVertexNum<400){
-				if(count<serverList1.size()*0.01){
-					break;
-				}
-			}else{
-				if(count<serverList1.size()*0.2){
-					break;
-				}
-			}			
-		  
-			
+//			if(netVertexNum<255){
+//				if(count==0){
+//					break;
+//				}
+//			}else if(netVertexNum>255 && netVertexNum<400){
+//				if(count<serverList1.size()*0.01){
+//					break;
+//				}
+//			}else{
+//				if(count<serverList1.size()*0.2){
+//					break;
+//				}
+//			}					  			
 		}
-		return getFinalStringArray(bestout, map); // 最终返回字符串数组
-		// return new String[] {"\r\n", "0828"};
+		//return getFinalStringArray(bestout, map); // 最终返回字符串数组
+		 return new String[] {"\r\n", "0828"};
 	}
 
 	public static List<Integer> dijkstra(Graph graph, int startPoint, int endPoint) {
@@ -350,44 +357,44 @@ public class Deploy {
 		int netVertexNum = graph.netVertexNum;
 		Graph clone = graph.myclone();// 备份 Significant!!!!!!!!!!!!
 		Path path = maxFlowMinFee(clone, netVertexNum - 2, netVertexNum - 1, demand);
-		if (path == null) {
-			List<List<Integer>> warning = new ArrayList<List<Integer>>();
-			List<ConsumerVertex> list = clone.consumerList;
-			for (ConsumerVertex cv : list) {
-				int nv = cv.connectedVertex;
-				Map<Integer, Integer> map = clone.struct[nv];
-				if (map.containsKey(clone.netVertexNum - 1)) {
-					List<Integer> record = new ArrayList<Integer>();
-					record.add(0); // 0表示当前为消费节点信息
-					record.add(cv.id); // 消费节点id
-					record.add(cv.demand); // 消费节点需求
-					record.add(cv.demand - clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand); // 已经满足的需求
-					record.add(clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand); // 消费节点的剩余需求
-					warning.add(record);
-					String out = "Consumer Vertex NO." + cv.id + " is not fully servered ! ";
-					out += "demand: " + cv.demand + " left: "
-							+ clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand;
-				//	System.out.println(out);
-				}
-			}
-			for (Integer i : clone.struct[clone.netVertexNum - 2].keySet()) {
-				List<Integer> record = new ArrayList<Integer>();
-				record.add(1); // 1表示当前为服务器节点信息
-				record.add(i); // 服务器位置
-				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).band); // 服务器总输出能力
-				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).band
-						- clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).upBand); // 服务器已输出的流量
-				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).upBand); // 服务器剩余输出能力
-				warning.add(record);
-				String out = "Server Vertex NO." + i + " is not fully used ! ";
-				out += "ability " + record.get(2) + " left: " + record.get(4);
-				//System.out.println(out);
-			}
-			List<Integer> t = new ArrayList<Integer>();
-			t.add(-1);// 最后一行为-1，代表异常
-			warning.add(t);
-			return warning;
-		}
+//		if (path == null) {
+//			List<List<Integer>> warning = new ArrayList<List<Integer>>();
+//			List<ConsumerVertex> list = clone.consumerList;
+//			for (ConsumerVertex cv : list) {
+//				int nv = cv.connectedVertex;
+//				Map<Integer, Integer> map = clone.struct[nv];
+//				if (map.containsKey(clone.netVertexNum - 1)) {
+//					List<Integer> record = new ArrayList<Integer>();
+//					record.add(0); // 0表示当前为消费节点信息
+//					record.add(cv.id); // 消费节点id
+//					record.add(cv.demand); // 消费节点需求
+//					record.add(cv.demand - clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand); // 已经满足的需求
+//					record.add(clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand); // 消费节点的剩余需求
+//					warning.add(record);
+//					String out = "Consumer Vertex NO." + cv.id + " is not fully servered ! ";
+//					out += "demand: " + cv.demand + " left: "
+//							+ clone.edgeList.get(map.get(clone.netVertexNum - 1)).upBand;
+//				//	System.out.println(out);
+//				}
+//			}
+//			for (Integer i : clone.struct[clone.netVertexNum - 2].keySet()) {
+//				List<Integer> record = new ArrayList<Integer>();
+//				record.add(1); // 1表示当前为服务器节点信息
+//				record.add(i); // 服务器位置
+//				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).band); // 服务器总输出能力
+//				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).band
+//						- clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).upBand); // 服务器已输出的流量
+//				record.add(clone.edgeList.get(clone.struct[clone.netVertexNum - 2].get(i)).upBand); // 服务器剩余输出能力
+//				warning.add(record);
+//				String out = "Server Vertex NO." + i + " is not fully used ! ";
+//				out += "ability " + record.get(2) + " left: " + record.get(4);
+//				//System.out.println(out);
+//			}
+//			List<Integer> t = new ArrayList<Integer>();
+//			t.add(-1);// 最后一行为-1，代表异常
+//			warning.add(t);
+//			return warning;
+//		}
 		List<List<Integer>> out = path.fromPathToString();
 		List<Integer> s = new ArrayList<Integer>();
 		s.add(0); // 0表示正确输出
